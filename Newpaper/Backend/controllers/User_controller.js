@@ -45,14 +45,14 @@ const userController = {
     try {
       const user = await User.findOne({ username: req.body.username });
       if (!user) {
-        res.status(404).json("Incorrect username");
+        return res.status(404).json("Incorrect username");
       }
       const validPassword = await bcrypt.compare(
         req.body.password,
         user.password
       );
       if (!validPassword) {
-        res.status(404).json("Incorrect password");
+       return res.status(404).json("Incorrect password");
       }
       if (user && validPassword) {
         //Generate access token
@@ -139,6 +139,7 @@ const userController = {
 
   delete: async (req, res) => {
     try {
+
       const deletedUser = await User.findByIdAndDelete(req.params.id);
       if (!deletedUser) {
         return res.status(404).json({ message: 'User not found' });
@@ -151,21 +152,47 @@ const userController = {
 
   getPreferences: async (req, res) => {
     try {
-      const user = await User.findById(req.params.id).populate('preferences.categories');
+      const userId = req.user.id; // Lấy ID của user từ req.user.id
+  
+      const user = await User.findById(userId).populate('preferences.categories.category');
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
       res.json(user.preferences);
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
   },
+  
 
   updatePreferences: async (req, res) => {
     try {
-      const updatedUser = await User.findByIdAndUpdate(req.params.id, { preferences: req.body.preferences }, { new: true });
-      res.json(updatedUser.preferences);
+      const userId = req.user.id;
+      const { categoryId, topics } = req.body; 
+  
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      let categoryPreference = user.preferences.categories.find(cat => cat.category.toString() === categoryId);
+  
+      if (categoryPreference) {
+
+        categoryPreference.topics.push(...topics.filter(topic => !categoryPreference.topics.includes(topic)));
+      } else {
+        user.preferences.categories.push({ category: categoryId, topics });
+      }
+  
+      await user.save();
+      res.json(user.preferences);
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
   }
+  
+  
 };
 
 module.exports = userController;

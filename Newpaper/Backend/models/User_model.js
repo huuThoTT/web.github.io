@@ -12,8 +12,12 @@ const userSchema = new Schema({
     phoneNumber: { type: String }
   },
   preferences: {
-    categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-    topics: [String]
+    categories: [
+      {
+        category: { type: Schema.Types.ObjectId, ref: 'Category' },
+        topics: [String]
+      }
+    ]
   },
   notificationsEnabled: { type: Boolean, default: true },
   bookmarkedArticles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
