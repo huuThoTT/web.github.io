@@ -1,12 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// eslint-disable-next-line
-import * as jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 import { deleteUser, getAllUsers } from "../../../redux/apiRequest";
 import { createAxios } from "../../../createInstance";
-// eslint-disable-next-line
-import * as axios from "axios";
+import axios from "axios";
 import "./home.css";
 import { loginSuccess } from "../../../redux/authSlice";
 
@@ -29,7 +27,6 @@ const HomePage = () => {
     if (user?.accessToken) {
       getAllUsers(user?.accessToken, dispatch, axiosJWT);
     }
-    // eslint-disable-next-line
   }, []);
 
   return (
