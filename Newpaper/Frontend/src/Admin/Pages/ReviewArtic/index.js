@@ -66,7 +66,7 @@ const ReviewArticles = () => {
     setTimeout(() => {
       setDataSource(staticArticlesData.articles);
       setLoading(false);
-    }, 1000); // Simulating loading time
+    }, 300); // Simulating loading time
   }, []);
 
   const handleApprove = (id) => {

@@ -1,5 +1,5 @@
-import { BellFilled, MailOutlined } from "@ant-design/icons";
-import { Badge, Drawer, Image, List, Space, Typography } from "antd";
+import { Avatar, Badge, Drawer, Image, List, Space, Typography, Form, Input, Button } from "antd";
+import { BellFilled, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import "./header.css";
 
@@ -16,20 +16,46 @@ const staticOrdersData = [
   { id: 3, title: "Product C" },
 ];
 
-function AppHeader() {
+function AdminHeader() {
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [adminInfoVisible, setAdminInfoVisible] = useState(false);
+  const [adminInfo, setAdminInfo] = useState({
+    username: "admin",
+    password: "********",
+    email: "admin@example.com",
+  });
 
   const comments = staticCommentsData;
   const orders = staticOrdersData;
 
+  const showAdminInfoDrawer = () => {
+    setAdminInfoVisible(true);
+  };
+
+  const closeAdminInfoDrawer = () => {
+    setAdminInfoVisible(false);
+  };
+
+  const handleAdminInfoUpdate = (values) => {
+    // Handle update logic here
+    console.log("Updated admin info:", values);
+    setAdminInfo(values); // Update admin info state
+    closeAdminInfoDrawer();
+  };
+
   return (
     <div className="AppHeader">
-      <Image
-        width={40}
-        src="https://yt3.ggpht.com/ytc/AMLnZu83ghQ28n1SqADR-RbI2BGYTrqqThAtJbfv9jcq=s176-c-k-c0x00ffffff-no-rj"
-      ></Image>
-      <Typography.Title>Aamir's Dashboard</Typography.Title>
+      <Avatar
+        size={40}
+        icon={<UserOutlined />}
+        src="https://baccara-tokyo.com/wp-content/uploads/2021/04/Eimi-Fukada.2-769x1024.png"
+        onClick={showAdminInfoDrawer}
+        style={{ cursor: "pointer" }}
+      />
+      <Typography.Title level={3} style={{ margin: "0 16px" }}>
+        Admin Dashboard
+      </Typography.Title>
       <Space>
         <Badge count={comments.length} dot>
           <MailOutlined
@@ -50,7 +76,7 @@ function AppHeader() {
       </Space>
       <Drawer
         title="Comments"
-        open={commentsOpen}
+        visible={commentsOpen}
         onClose={() => {
           setCommentsOpen(false);
         }}
@@ -61,11 +87,11 @@ function AppHeader() {
           renderItem={(item) => {
             return <List.Item>{item.body}</List.Item>;
           }}
-        ></List>
+        />
       </Drawer>
       <Drawer
         title="Notifications"
-        open={notificationsOpen}
+        visible={notificationsOpen}
         onClose={() => {
           setNotificationsOpen(false);
         }}
@@ -81,10 +107,55 @@ function AppHeader() {
               </List.Item>
             );
           }}
-        ></List>
+        />
+      </Drawer>
+      <Drawer
+        title="Admin Information"
+        visible={adminInfoVisible}
+        onClose={closeAdminInfoDrawer}
+        width={400}
+      >
+        <Form
+          layout="vertical"
+          onFinish={handleAdminInfoUpdate}
+          initialValues={adminInfo}
+        >
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: "Please enter username" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please enter password" }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: "Please enter email" },
+              { type: "email", message: "Please enter a valid email" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item>
+            <Space>
+              <Button type="primary" htmlType="submit">
+                Update
+              </Button>
+              <Button onClick={closeAdminInfoDrawer}>Cancel</Button>
+            </Space>
+          </Form.Item>
+        </Form>
       </Drawer>
     </div>
   );
 }
 
-export default AppHeader;
+export default AdminHeader;
