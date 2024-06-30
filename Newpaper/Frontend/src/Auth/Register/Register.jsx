@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../../../redux/apiRequest";
+import { registerUser } from "../../redux/apiRequest";
 import "./register.css";
 const Register = () => {
   const [email,setEmail] = useState("");
