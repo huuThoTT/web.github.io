@@ -1,8 +1,9 @@
 import {
   AppstoreOutlined,
   ShopOutlined,
-  ShoppingCartOutlined,
   UserOutlined,
+  TagsOutlined ,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
@@ -31,7 +32,7 @@ function SideMenu() {
         selectedKeys={[selectedKeys]}
         items={[
           {
-            label: "Dashbaord",
+            label: "Dashboard",
             icon: <AppstoreOutlined />,
             key: "/admin",
           },
@@ -47,9 +48,14 @@ function SideMenu() {
             icon: <UserOutlined />,
           },
           {
-            label: "Orders",
-            key: "/admin/orders",
-            icon: <ShoppingCartOutlined />,
+            label: "Category",
+            key: "/admin/category",
+            icon: <TagsOutlined />,
+          },
+          {
+            label: "Reviews Articles",
+            key: "/admin/review",
+            icon: <CheckCircleOutlined/>,
           },
         ]}
       ></Menu>

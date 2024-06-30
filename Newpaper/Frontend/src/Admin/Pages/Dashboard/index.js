@@ -1,8 +1,7 @@
 import {
-  DollarCircleOutlined,
-  ShoppingCartOutlined,
-  ShoppingOutlined,
   UserOutlined,
+  EyeOutlined, 
+  FileTextOutlined
 } from "@ant-design/icons";
 import { Card, Space, Statistic, Table, Typography } from "antd";
 import { useEffect, useState } from "react";
@@ -28,43 +27,33 @@ ChartJS.register(
 );
 
 const staticData = {
-  orders: {
-    total: 120,
-    discountedTotal: 1500,
-    products: [
-      { title: "Product 1", quantity: 2, discountedPrice: 100 },
-      { title: "Product 2", quantity: 1, discountedPrice: 50 },
-      { title: "Product 3", quantity: 4, discountedPrice: 200 },
-    ],
-  },
-  inventory: {
-    total: 300,
-  },
-  customers: {
-    total: 75,
-  },
-  revenue: {
-    carts: [
-      { userId: 1, discountedTotal: 500 },
-      { userId: 2, discountedTotal: 300 },
-      { userId: 3, discountedTotal: 700 },
-    ],
-  },
+  views: [
+    { article: "Article 1", month: "January", views: 1200 },
+    { article: "Article 2", month: "January", views: 1100 },
+    { article: "Article 3", month: "February", views: 900 },
+    { article: "Article 4", month: "February", views: 1300 },
+    { article: "Article 5", month: "March", views: 1500 },
+    { article: "Article 6", month: "March", views: 800 },
+    { article: "Article 7", month: "April", views: 700 },
+    { article: "Article 8", month: "April", views: 1600 },
+    { article: "Article 9", month: "May", views: 1400 },
+    { article: "Article 10", month: "May", views: 1200 },
+    { article: "Article 11", month: "June", views: 1000 },
+    { article: "Article 12", month: "June", views: 1100 },
+  ]
 };
 
 function Dashboard() {
-  const [orders, setOrders] = useState(0);
-  const [inventory, setInventory] = useState(0);
-  const [customers, setCustomers] = useState(0);
-  const [revenue, setRevenue] = useState(0);
+  const [totalViews, setTotalViews] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalArticles, setTotalArticles] = useState(0);
 
   useEffect(() => {
     const data = staticData;
 
-    setOrders(data.orders.total);
-    setRevenue(data.orders.discountedTotal);
-    setInventory(data.inventory.total);
-    setCustomers(data.customers.total);
+    setTotalViews(data.views.reduce((acc, item) => acc + item.views, 0));
+    setTotalUsers(75);  // static value, can be adjusted as needed
+    setTotalArticles(12); // total articles based on the static data
   }, []);
 
   return (
@@ -73,7 +62,7 @@ function Dashboard() {
       <Space direction="horizontal">
         <DashboardCard
           icon={
-            <ShoppingCartOutlined
+            <EyeOutlined
               style={{
                 color: "green",
                 backgroundColor: "rgba(0,255,0,0.25)",
@@ -83,12 +72,12 @@ function Dashboard() {
               }}
             />
           }
-          title={"Orders"}
-          value={orders}
+          title={"Total views"}
+          value={totalViews}
         />
         <DashboardCard
           icon={
-            <ShoppingOutlined
+            <UserOutlined
               style={{
                 color: "blue",
                 backgroundColor: "rgba(0,0,255,0.25)",
@@ -98,12 +87,12 @@ function Dashboard() {
               }}
             />
           }
-          title={"Inventory"}
-          value={inventory}
+          title={"Total users"}
+          value={totalUsers}
         />
         <DashboardCard
           icon={
-            <UserOutlined
+            <FileTextOutlined
               style={{
                 color: "purple",
                 backgroundColor: "rgba(0,255,255,0.25)",
@@ -113,28 +102,13 @@ function Dashboard() {
               }}
             />
           }
-          title={"Customer"}
-          value={customers}
-        />
-        <DashboardCard
-          icon={
-            <DollarCircleOutlined
-              style={{
-                color: "red",
-                backgroundColor: "rgba(255,0,0,0.25)",
-                borderRadius: 20,
-                fontSize: 24,
-                padding: 8,
-              }}
-            />
-          }
-          title={"Revenue"}
-          value={revenue}
+          title={"Total articles"}
+          value={totalArticles}
         />
       </Space>
       <Space>
-        <RecentOrders />
-        <DashboardChart />
+        <TopArticles />
+        <ViewsChart />
       </Space>
     </Space>
   );
@@ -145,38 +119,39 @@ function DashboardCard({ title, value, icon }) {
     <Card>
       <Space direction="horizontal">
         {icon}
-        <Statistic title={title} value={value} />
+        <Statistic
+          title={title}
+          value={value}
+          valueStyle={{ fontSize: '32px' }} // Adjust font size here
+        />
       </Space>
     </Card>
   );
 }
-function RecentOrders() {
+
+function TopArticles() {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    const data = staticData.orders.products.splice(0, 3);
+    const data = staticData.views.sort((a, b) => b.views - a.views).slice(0, 10);
     setDataSource(data);
     setLoading(false);
   }, []);
 
   return (
     <>
-      <Typography.Text>Recent Orders</Typography.Text>
+      <Typography.Text>Top 10 Articles by Views</Typography.Text>
       <Table
         columns={[
           {
-            title: "Title",
-            dataIndex: "title",
+            title: "Article",
+            dataIndex: "article",
           },
           {
-            title: "Quantity",
-            dataIndex: "quantity",
-          },
-          {
-            title: "Price",
-            dataIndex: "discountedPrice",
+            title: "Views",
+            dataIndex: "views",
           },
         ]}
         loading={loading}
@@ -187,34 +162,34 @@ function RecentOrders() {
   );
 }
 
-function DashboardChart() {
-  const [revenueData, setRevenueData] = useState({
+function ViewsChart() {
+  const [viewsData, setViewsData] = useState({
     labels: [],
     datasets: [],
   });
 
   useEffect(() => {
-    const data = staticData.revenue;
+    const data = staticData.views;
+    const groupedData = data.reduce((acc, item) => {
+      acc[item.month] = (acc[item.month] || 0) + item.views;
+      return acc;
+    }, {});
 
-    const labels = data.carts.map((cart) => {
-      return `User-${cart.userId}`;
-    });
-    const dataValues = data.carts.map((cart) => {
-      return cart.discountedTotal;
-    });
+    const labels = Object.keys(groupedData);
+    const dataValues = Object.values(groupedData);
 
     const dataSource = {
       labels,
       datasets: [
         {
-          label: "Revenue",
+          label: "Views",
           data: dataValues,
-          backgroundColor: "rgba(255, 0, 0, 1)",
+          backgroundColor: "rgba(75, 192, 192, 1)",
         },
       ],
     };
 
-    setRevenueData(dataSource);
+    setViewsData(dataSource);
   }, []);
 
   const options = {
@@ -225,15 +200,16 @@ function DashboardChart() {
       },
       title: {
         display: true,
-        text: "Order Revenue",
+        text: "Monthly Article Views",
       },
     },
   };
 
   return (
-    <Card style={{ width: 500, height: 250 }}>
-      <Bar options={options} data={revenueData} />
+    <Card style={{ width: 500, height: 580 }}>
+      <Bar options={options} data={viewsData} />
     </Card>
   );
 }
+
 export default Dashboard;

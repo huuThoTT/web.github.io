@@ -1,198 +1,173 @@
-import { Button, Modal, Space, Table, Form, Input, Select, Typography,Rate } from "antd";
-import { useState } from "react";
+import React, { useState,useEffect } from 'react';
+import { Button, Table, Modal, Form, Input, Space, Typography } from 'antd';
 
-// Static articles data for demonstration
+// Static data for demonstration
 const staticArticlesData = {
   articles: [
     {
-      id: 1,
-      title: "Article 1",
-      content: "Content of Article 1",
-      author: "Author 1",
-      categories: ["60c72b2f9b1e8b0b8c9c9a1a"], // ObjectId of Category
-      tags: ["tag1", "tag2"],
-      status: "pending",
-      views: 100,
-      totalRating: 4,
-      ratingCount: 1,
-    },
-    {
-      id: 2,
-      title: "Article 2",
-      content: "Content of Article 2",
-      author: "Author 2",
-      categories: ["60c72b2f9b1e8b0b8c9c9a1b"], // ObjectId of Category
-      tags: ["tag3"],
+      _id: "1",
+      title: "Tech Article 1",
+      content: "Content of Tech Article 1",
+      author: "John Doe",
+      categories: ["1"],
+      tags: ["tech", "AI"],
       status: "approved",
-      views: 200,
-      totalRating: 10,
-      ratingCount: 2,
+      views: 100,
+      totalRating: 4.5,
+      ratingCount: 20,
     },
     {
-      id: 3,
-      title: "Article 3",
-      content: "Content of Article 3",
-      author: "Author 3",
-      categories: ["60c72b2f9b1e8b0b8c9c9a1c"], // ObjectId of Category
-      tags: ["tag4", "tag5"],
-      status: "rejected",
-      views: 50,
-      totalRating: 2,
-      ratingCount: 1,
+      _id: "2",
+      title: "Health Article 1",
+      content: "Content of Health Article 1",
+      author: "Jane Smith",
+      categories: ["2"],
+      tags: ["health", "fitness"],
+      status: "approved",
+      views: 150,
+      totalRating: 4.8,
+      ratingCount: 15,
     },
   ],
 };
-const calculateAverageRating = (totalRating, ratingCount) => {
-  return ratingCount === 0 ? 0 : totalRating / ratingCount;
-};
-function Articles() {
-  const [dataSource, setDataSource] = useState(staticArticlesData.articles);
+
+const Article = () => {
+  const [loading,setLoading] = useState(false);
+  const [dataSource, setDataSource] = useState(null);
+  const [filteredData, setFilteredData] = useState(staticArticlesData.articles);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [form] = Form.useForm();
-
-  const calculateAverageRating = (totalRating, ratingCount) => {
-    if (ratingCount === 0) return 0;
-    return Math.min(totalRating / ratingCount, 5.0).toFixed(1);
-  };
-
-  const handleAddArticle = () => {
+  useEffect(() => {
+    setLoading(true);
+    // Simulating API call with static data
+    setTimeout(() => {
+      setDataSource(staticArticlesData.articles);
+      setLoading(false);
+    }, 300); // Simulating loading time
+  }, []);
+  const handleAdd = () => {
     setEditingArticle(null);
-    form.resetFields();
-    setModalVisible(true);
+    setIsModalVisible(true);
   };
 
-  const handleEditArticle = (article) => {
-    setEditingArticle(article);
-    form.setFieldsValue(article);
-    setModalVisible(true);
+  const handleEdit = (record) => {
+    setEditingArticle(record);
+    setIsModalVisible(true);
   };
 
-  const handleDeleteArticle = (articleId) => {
-    const updatedData = dataSource.filter((article) => article.id !== articleId);
-    setDataSource(updatedData);
+  const handleDelete = (record) => {
+    const newData = dataSource.filter((article) => article._id !== record._id);
+    setDataSource(newData);
+    setFilteredData(newData);
   };
 
-  const handleSaveArticle = () => {
-    form.validateFields().then((values) => {
-      if (editingArticle) {
-        const updatedData = dataSource.map((article) =>
-          article.id === editingArticle.id ? { ...article, ...values } : article
-        );
-        setDataSource(updatedData);
-      } else {
-        const newId = dataSource.length > 0 ? dataSource[dataSource.length - 1].id + 1 : 1;
-        const newArticle = { ...values, id: newId };
-        setDataSource([...dataSource, newArticle]);
-      }
-      setModalVisible(false);
-    });
+  const handleSave = (values) => {
+    if (editingArticle) {
+      const newData = dataSource.map((article) =>
+        article._id === editingArticle._id ? { ...article, title: values.title } : article
+      );
+      setDataSource(newData);
+      setFilteredData(newData);
+    } else {
+      const newArticle = {
+        _id: (dataSource.length + 1).toString(),
+        title: values.title,
+        content: '',
+        author: '',
+        categories: [],
+        tags: [],
+        status: 'pending',
+        views: 0,
+        totalRating: 0,
+        ratingCount: 0,
+      };
+      const newData = [...dataSource, newArticle];
+      setDataSource(newData);
+      setFilteredData(newData);
+    }
+    setIsModalVisible(false);
   };
 
-  const columns = [
-    {
-      title: "Title",
-      dataIndex: "title",
-    },
-    {
-      title: "Author",
-      dataIndex: "author",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-    },
-    {
-      title: "Views",
-      dataIndex: "views",
-    },
-    {
-      title: "Total Rating",
-      dataIndex: "totalRating",
-  
-    },
-    {
-      title: "Rating Count",
-      dataIndex: "ratingCount",
-    },
-    {
-      title: "Average Rating",
-      render: (record) => {
-        const averageRating = calculateAverageRating(record.totalRating, record.ratingCount);
-        return <Rate value={averageRating} allowHalf disabled />;
-      },
-    },
-    {
-      title: "Actions",
-      dataIndex: "action",
-      render: (_, record) => (
-        <Space>
-          <Button type="primary" onClick={() => handleEditArticle(record)}>
-            Edit
-          </Button>
-          <Button type="danger" onClick={() => handleDeleteArticle(record.id)}>
-            Delete
-          </Button>
-        </Space>
-      ),
-    },
-  ];
+  const handleSearch = (value) => {
+    const filtered = dataSource.filter((article) =>
+      article.title.toLowerCase().includes(value.toLowerCase()) ||
+      article.author.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredData(filtered);
+  };
 
   return (
-    <Space size={20} direction="vertical">
-      <Typography.Title level={4}>Articles</Typography.Title>
-      <Button type="primary" onClick={handleAddArticle}>
-        Add Article
-      </Button>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        pagination={{
-          pageSize: 5,
-        }}
-      />
-      <Modal
-        title={editingArticle ? "Edit Article" : "Add Article"}
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        onOk={handleSaveArticle}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item name="title" label="Title" rules={[{ required: true, message: "Please enter the title" }]}>
+    <Space direction="vertical" size={20}>
+      <Typography.Title level={4}>Article Management</Typography.Title>
+      <Space direction="horizontal">
+        <Button type="primary" onClick={handleAdd}>Add Article</Button>
+        <Input.Search
+          placeholder="Search articles"
+          enterButton
+          onSearch={handleSearch}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+      </Space>
+      <Table loading ={loading} dataSource={filteredData} rowKey="_id" columns={[
+        {
+          title: "Title",
+          dataIndex: "title",
+        },
+        {
+          title: "Content",
+          dataIndex: "content",
+        },
+        {
+          title: "Author",
+          dataIndex: "author",
+        },
+        {
+          title: "Categories",
+          dataIndex: "categories",
+          render: (categories) => (
+            <ul>
+              {categories.map((category, index) => (
+                <li key={index}>{category}</li>
+              ))}
+            </ul>
+          ),
+        },
+        {
+          title: "Tags",
+          dataIndex: "tags",
+          render: (tags) => (
+            <ul>
+              {tags.map((tag, index) => (
+                <li key={index}>{tag}</li>
+              ))}
+            </ul>
+          ),
+        },
+        {
+          title: "Actions",
+          render: (text, record) => (
+            <Space>
+              <Button onClick={() => handleEdit(record)}>Edit</Button>
+              <Button danger onClick={() => handleDelete(record)}>Delete</Button>
+            </Space>
+          ),
+        },
+      ]} />
+
+      <Modal title={editingArticle ? "Edit Article" : "Add Article"} visible={isModalVisible} onCancel={() => setIsModalVisible(false)} footer={null}>
+        <Form initialValues={editingArticle} onFinish={handleSave}>
+          <Form.Item name="title" label="Article Title" rules={[{ required: true, message: 'Please input the article title!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="content" label="Content" rules={[{ required: true, message: "Please enter the content" }]}>
-            <Input.TextArea rows={4} />
-          </Form.Item>
-          <Form.Item name="author" label="Author" rules={[{ required: true, message: "Please enter the author" }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="categories" label="Categories" rules={[{ required: true, message: "Please enter the categories" }]}>
-            <Select mode="tags" style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item name="tags" label="Tags" rules={[{ required: true, message: "Please enter the tags" }]}>
-            <Select mode="tags" style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item name="status" label="Status" rules={[{ required: true, message: "Please select the status" }]}>
-            <Select>
-              <Select.Option value="pending">Pending</Select.Option>
-              <Select.Option value="approved">Approved</Select.Option>
-              <Select.Option value="rejected">Rejected</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="views" label="Views" rules={[{ required: true, message: "Please enter the views" }]}>
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item name="totalRating" label="Total Rating" rules={[{ required: true, message: "Please enter the total rating" }]}>
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item name="ratingCount" label="Rating Count" rules={[{ required: true, message: "Please enter the rating count" }]}>
-            <Input type="number" />
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Save
+            </Button>
           </Form.Item>
         </Form>
       </Modal>
     </Space>
   );
-}
+};
 
-export default Articles;
+export default Article;

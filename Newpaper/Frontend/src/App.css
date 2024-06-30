@@ -12,3 +12,6 @@
   align-items: flex-start;
   background-color: rgba(0, 0, 0, 0.05) ;
 }
+.PageContent{
+  padding-left: 12px;
+}

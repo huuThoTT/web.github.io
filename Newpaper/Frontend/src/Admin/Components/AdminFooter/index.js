@@ -1,16 +1,33 @@
-import { Typography } from "antd";
-import "./footer.css"
-function AppFooter() {
+import { Layout, Typography, Space } from "antd";
+import "./footer.css";
+
+const { Footer } = Layout;
+
+function AdminFooter() {
   return (
-    <div className="AppFooter">
-      <Typography.Link href="tel:+123456789">+123456789</Typography.Link>
-      <Typography.Link href="https://www.google.com" target={"_blank"}>
-        Privacy Policy
-      </Typography.Link>
-      <Typography.Link href="https://www.google.com" target={"_blank"}>
-        Terms of Use
-      </Typography.Link>
-    </div>
+    <Footer className="AppFooter">
+      <div className="footer-content">
+        <Space size="large">
+          <Typography.Link href="tel:+123456789">+123456789</Typography.Link>
+          <Typography.Link
+            href="https://www.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Privacy Policy
+          </Typography.Link>
+          <Typography.Link
+            href="https://www.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Terms of Use
+          </Typography.Link>
+          <Typography.Text>© {new Date().getFullYear()} Your Company</Typography.Text>
+        </Space>
+      </div>
+    </Footer>
   );
 }
-export default AppFooter;
+
+export default AdminFooter;

@@ -26,7 +26,8 @@ const NewsItem = ({ imageSrc, title, url, author, publish_time }) => (
   </article>
 );
 
-const CustomerHome = () => {
+
+function CusHome() {
   const newsItems = [
     {
       imageSrc: "https://vcdn1-kinhdoanh.vnecdn.net/2024/06/13/nganhangbanvang33JPG-171825734-2233-9344-1718257496.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=h0D8npEGtQKwic8DZ3mQXw",
@@ -111,5 +112,5 @@ const CustomerHome = () => {
   );
 }
 
-export default CustomerHome;
 
+export default CusHome;

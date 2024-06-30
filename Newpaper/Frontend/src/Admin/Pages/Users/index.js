@@ -1,5 +1,5 @@
-import { Avatar, Button, Modal, Space, Table, Form, Input, Checkbox, Typography } from "antd";
-import { useState } from "react";
+import { Button, Checkbox, Form, Input, Modal, Space, Table, Typography } from "antd";
+import React, { useState, useEffect } from 'react';
 
 // Static customers data for demonstration
 const staticCustomersData = {
@@ -73,12 +73,20 @@ const staticCustomersData = {
   ],
 };
 
-function Customers() {
-  const [dataSource, setDataSource] = useState(staticCustomersData.users);
+const Users = () => {
+  const [loading, setLoading] = useState(false);
+  const [dataSource, setDataSource] = useState(null);
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
-
+  useEffect(() => {
+    setLoading(true);
+    // Simulating API call with static data
+    setTimeout(() => {
+      setDataSource(staticCustomersData.users);
+      setLoading(false);
+    }, 300); // Simulating loading time
+  }, []);
   const handleAddCustomer = () => {
     setEditingCustomer(null);
     form.resetFields();
@@ -110,6 +118,14 @@ function Customers() {
       }
       setModalVisible(false);
     });
+  };
+
+  const handleSearch = (value) => {
+    const filteredData = staticCustomersData.users.filter((customer) =>
+      customer.username.toLowerCase().includes(value.toLowerCase()) ||
+      customer.email.toLowerCase().includes(value.toLowerCase())
+    );
+    setDataSource(filteredData);
   };
 
   const columns = [
@@ -149,15 +165,18 @@ function Customers() {
   return (
     <Space size={20} direction="vertical">
       <Typography.Title level={4}>Users</Typography.Title>
+      <Space direction="horizontal">
       <Button type="primary" onClick={handleAddCustomer}>
         Add User
       </Button>
-      <Table
-        columns={columns}
-        dataSource={dataSource}
-        pagination={{ pageSize: 5 }}
-        rowKey="id"
+      <Input.Search
+        placeholder="Search users"
+        enterButton
+        onSearch={handleSearch}
+        onChange={(e) => handleSearch(e.target.value)}
       />
+      </Space>
+      <Table  loading = {loading} columns={columns} dataSource={dataSource} pagination={{ pageSize: 5 }} rowKey="id" />
       <Modal
         title={editingCustomer ? "Edit User" : "Add User"}
         visible={modalVisible}
@@ -181,6 +200,6 @@ function Customers() {
       </Modal>
     </Space>
   );
-}
+};
 
-export default Customers;
+export default Users;
