@@ -56,11 +56,29 @@ a {
     transform: translateY(-50%);
 }
 
+.search-bar {
+    border-radius: 3px;
+}
+
+.search-button-icon {
+    background-color: #FFFBF4;
+    border: none;
+}
+
+.search-button-icon:hover {
+    cursor: pointer;
+}
+
+.header__navbar-item.header__navbar-item--log {
+    cursor: pointer;
+}
+
 .menu {
     border-top: 1px solid #a5dbf8;
-    height: 70px;
+    height: 40px;
     flex: auto;
     display: flex;
+    border-bottom: 4px solid #a5dbf8;
 }
 
 .menu>li {
@@ -78,15 +96,24 @@ a {
 }
 
 .menu>li a:hover {
-    color: #2e66e8;
+    color: var(--primary-color);
 }
 
+
+/* ----------footer----------- */
+
 .footer {
-    border-top: 4px solid #58c7e9;
+    border-top: 4px solid #a5dbf8;
 }
 
 .footer-item>a {
+    font-size: 15px;
     color: var(--text-color);
+    font-weight: 300;
+}
+
+.footer-item>a:hover {
+    color: var(--primary-color);
 }
 
 .footer-bar {
@@ -97,7 +124,11 @@ a {
 
 .footer-lienhe-item {
     display: inline;
+    font-size: 15px;
 }
+
+
+/* ----------auth_login----------- */
 
 .auth-form__container {
     padding: 0 32px;
@@ -163,6 +194,9 @@ a {
     justify-content: flex-end;
 }
 
+
+/* -----------button----------- */
+
 .btn {
     min-width: 120px;
     height: 30px;
@@ -186,4 +220,92 @@ a {
 
 .btn.btn--disable {
     cursor: default;
+}
+
+
+/* ----TrangNhat----- */
+
+.trangnhat {}
+
+.baoto {
+    padding: 0 100px;
+}
+
+.baoto__anh {
+    background-color: #FFFBF4;
+}
+
+.baoto_loai>a {
+    font-size: 25px;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.baoto_tieude>a {
+    font-size: 30px;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.baoto_tomtat>a {
+    font-size: 15px;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.tacgia_thoigian {
+    display: flex;
+    align-items: center;
+    /* Sắp xếp các phần tử theo chiều dọc */
+}
+
+.tacgia-thoigian {
+    display: flex;
+    gap: 10px;
+    /* Khoảng cách giữa "Tác giả" và "Thời gian" */
+}
+
+.dot {
+    content: '·';
+    /* Ký tự phân cách */
+    margin: 0 5px;
+    /* Khoảng cách xung quanh ký tự phân cách */
+}
+
+.container {
+    display: flex;
+    gap: 0;
+}
+
+.baonho {
+    display: flex;
+    /* Bật chế độ flexbox cho phần tử cha */
+    flex-direction: column;
+    /* Sắp xếp các phần tử con theo chiều dọc */
+}
+
+.baonho-bao1,
+.baonho-bao2,
+.baonho-bao3,
+.baonho-bao4 {
+    flex: 1;
+    /* Cho phép các phần tử con chia đều không gian còn lại */
+        width: 300px;
+    /* Giới hạn chiều rộng tối đa là 300px */
+    height: 300px;
+    /* Chiều cao cố định 300px */
+}
+
+.baonho-bao1 {
+    padding: left -100px;
+}
+
+.baonho-tieude a {
+    font-size: 15px;
+    display: flex;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-wrap: wrap;
+    max-width: 300px;
+    max-height: 4em;
 }
