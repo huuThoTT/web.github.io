@@ -248,9 +248,13 @@ a {
 }
 
 .baoto_tomtat>a {
-    font-size: 15px;
+    font-size: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: var(--text-color);
-    line-height: 1.5;
 }
 
 .tacgia_thoigian {
@@ -272,40 +276,108 @@ a {
     /* Khoảng cách xung quanh ký tự phân cách */
 }
 
-.container {
+.contrangnhat {
     display: flex;
     gap: 0;
+    height: 1025px;
 }
 
 .baonho {
-    display: flex;
-    /* Bật chế độ flexbox cho phần tử cha */
-    flex-direction: column;
-    /* Sắp xếp các phần tử con theo chiều dọc */
+    width: 265px;
+    height: 265px;
 }
 
 .baonho-bao1,
 .baonho-bao2,
 .baonho-bao3,
 .baonho-bao4 {
-    flex: 1;
-    /* Cho phép các phần tử con chia đều không gian còn lại */
-        width: 300px;
-    /* Giới hạn chiều rộng tối đa là 300px */
-    height: 300px;
-    /* Chiều cao cố định 300px */
-}
-
-.baonho-bao1 {
-    padding: left -100px;
+    width: 265px;
+    height: 265px;
 }
 
 .baonho-tieude a {
-    font-size: 15px;
-    display: flex;
+    font-size: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex-wrap: wrap;
-    max-width: 300px;
-    max-height: 4em;
+    color: var(--text-color);
+    max-width: 265px;
+}
+
+.tinmn {
+    padding: 0 100px;
+    border-top: #000;
+}
+
+.tin a {
+    color: var(--text-color);
+}
+
+.continmoingay {
+    display: flex;
+}
+
+.bnmn {
+    width: 630px;
+    border-right: 1px solid #333;
+}
+
+.bnmn-bn1,
+.bnmn-bn2,
+.bnmn-bn3 {
+    display: flex;
+    margin-top: 10px;
+    gap: 10px;
+    height: 150px;
+    width: 600px;
+}
+
+.tlbn a {
+    font-size: 20px;
+    color: #888;
+}
+
+.noidung-tomtatnd a {
+    font-size: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-color);
+}
+
+.bttinmn {
+    margin-left: 30px;
+}
+
+.bttinmn-tl {
+    margin-bottom: 10px;
+}
+
+.bttinmn-tl a {
+    font-size: 25px;
+    color: #888;
+}
+
+.btnd {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.btnd a {
+    font-size: 16px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-color);
+}
+
+.tg a {
+    font-size: 12px;
+    color: var(--text-color);
 }

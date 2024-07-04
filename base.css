@@ -2,7 +2,7 @@
     --white-color: #fff;
     --black-color: #000;
     --text-color: #333;
-    --primary-color: #f12121;
+    --primary-color: #1291A2;
     --border-color: #dbdbdb;
 }
 
@@ -48,6 +48,18 @@ html {
     to {
         transform: scale(var(--growth-to));
     }
+}
+
+body {
+    background-color: #FFFBF4;
+}
+
+button {
+    background-color: #FFFBF4;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .modal {
