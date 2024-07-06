@@ -19,6 +19,7 @@ const userSchema = new Schema({
       }
     ]
   },
+  Subscribe: { type: String, required: true, unique: true },
   notificationsEnabled: { type: Boolean, default: true },
   bookmarkedArticles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
   adFreeSubscription: { type: Boolean, default: false },

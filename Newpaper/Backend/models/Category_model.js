@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const categorySchema = new Schema({
     name: { type: String, required: true },
     description: { type: String },
-    listIdArticle:[{ type: Schema.Types.ObjectId }],
+articles: [{ type: Schema.Types.ObjectId, ref: 'Article' }] ,
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });

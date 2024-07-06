@@ -33,13 +33,7 @@ const staticData = {
     { article: "Article 3", month: "February", views: 900 },
     { article: "Article 4", month: "February", views: 1300 },
     { article: "Article 5", month: "March", views: 1500 },
-    { article: "Article 6", month: "March", views: 800 },
-    { article: "Article 7", month: "April", views: 700 },
-    { article: "Article 8", month: "April", views: 1600 },
-    { article: "Article 9", month: "May", views: 1400 },
-    { article: "Article 10", month: "May", views: 1200 },
-    { article: "Article 11", month: "June", views: 1000 },
-    { article: "Article 12", month: "June", views: 1100 },
+    
   ]
 };
 
@@ -142,7 +136,7 @@ function TopArticles() {
 
   return (
     <>
-      <Typography.Text>Top 10 Articles by Views</Typography.Text>
+      <Typography.Text>Top 5 Articles by Views</Typography.Text>
       <Table
         columns={[
           {
@@ -206,7 +200,7 @@ function ViewsChart() {
   };
 
   return (
-    <Card style={{ width: 500, height: 580 }}>
+    <Card style={{ width: 500, height: 250 }}>
       <Bar options={options} data={viewsData} />
     </Card>
   );

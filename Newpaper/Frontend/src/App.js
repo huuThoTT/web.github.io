@@ -10,16 +10,22 @@ import Category from "./Admin/Pages/Category";
 import Dashboard from "./Admin/Pages/Dashboard";
 import Users from "./Admin/Pages/Users";
 import ReviewArticles from "./Admin/Pages/ReviewArtic";
-import CusHome from "./Customer/Pages/CusHome/CusHome";
-import CusHeader from "./Customer/Components/CusHeader/CusHeader";
-import CusFooter from "./Customer/Components/CusFooter/CusFooter";
+import Tag from "./Admin/Pages/Tags/index"
 import { useState } from "react";
-
+import Header from "./Customer/common/header/Header"
+import Homepages from "./Customer/home/Homepages"
+import Footer from "./Customer/common/footer/Footer"
+import SinglePage from "./Customer/singlePage/SinglePage"
+import Culture from "./Customer/culture/Culture"
+import Login from "./Auth/Login/Login";
+import Register from "./Auth/Register/Register";
 function App() {
   return (
     <div className="App">
   
   <Routes>
+  <Route path="/login" element={ <Login />} />
+  <Route path="/register" element={<Register />} />
       <Route path="/admin" element={
         <div>
           <AdminHeader />
@@ -80,11 +86,51 @@ function App() {
           <AdminFooter />
         </div>
       } />
-      <Route path="/" element={
+       <Route path="/admin/tag" element={
         <div>
-          <CusHeader />
-          <CusHome />
-          <CusFooter />
+          <AdminHeader />
+          <div className="SideMenuAndPageContent">
+            <SideMenu />
+            <div className="PageContent">
+              <Tag />
+            </div>
+          </div>
+          <AdminFooter />
+        </div>
+      } />
+       <Route path="/" element={
+        <div>
+          <Header />
+         <Homepages/>
+          <Footer />
+        </div>
+      } />
+        <Route path="/singlepage/:id" element={
+        <div>
+          <Header />
+         <SinglePage/>
+          <Footer />
+        </div>
+      } />
+      <Route path="/category/:id" element={
+        <div>
+          <Header />
+          <p>dd</p>
+          <Footer />
+        </div>
+      } />
+      <Route path="/tag/:id" element={
+        <div>
+          <Header />
+      <p>dd</p>
+          <Footer />
+        </div>
+      } />
+        <Route path="/culture" element={
+        <div>
+          <Header />
+         <Culture/>
+          <Footer />
         </div>
       } />
     </Routes>

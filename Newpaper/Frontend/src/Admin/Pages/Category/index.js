@@ -8,19 +8,21 @@ const staticCategoriesData = {
       _id: "1",
       name: "Technology",
       description: "Articles about technology",
-      listIdArticle: [
-        { title: "Tech Article 1", description: "Description of Tech Article 1", author: "John Doe" },
-        { title: "Tech Article 2", description: "Description of Tech Article 2", author: "Jane Smith" }
+      listIdTags: [
+        { name: "dsss" },
+        { name: "ddd"}
       ],
+      date : "13/02/2021"
     },
     {
       _id: "2",
       name: "Health",
       description: "Articles about health",
-      listIdArticle: [
-        { title: "Health Article 1", description: "Description of Health Article 1", author: "Emily Johnson" },
-        { title: "Health Article 2", description: "Description of Health Article 2", author: "Michael Brown" }
+      listIdTags: [
+        { name: "dsd"},
+        { name: "đsdd" }
       ],
+         
     },
   ],
 };
@@ -103,19 +105,18 @@ const Category = () => {
           dataIndex: "name",
         },
         {
-          title: "Articles",
-          dataIndex: "listIdArticle",
-          render: (articles) => (
-            <ul>
-              {articles.map((article, index) => (
-                <li key={index}>
-                  <strong>Title:</strong> {article.title} <br />
-                  <strong>Description:</strong> {article.description} <br />
-                  <strong>Author:</strong> {article.author}
+          title: "Tags",
+          dataIndex: "listIdTags",
+          render: (tags) => (
+            <ul style={{ paddingInlineStart: 0 }}>
+              {tags.map((tags, index) => (
+                <li key={index} style={{ marginBottom: '15px' }}>
+                  <strong>Tags name</strong> {tags.name} <br />
                 </li>
               ))}
             </ul>
           ),
+          
         },
         {
           title: "Actions",

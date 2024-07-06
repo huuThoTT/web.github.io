@@ -7,7 +7,14 @@ const staticArticlesData = {
     {
       id: 1,
       title: "Article 1",
-      content: "Content for article 1",
+      content_blocks: [
+        { type: "paragraph", content: "This is the first paragraph of the article." },
+        { type: "image", src: "http://example.com/image1.jpg", alt: "Image caption 1" },
+        { type: "paragraph", content: "This is the second paragraph of the article." },
+        { type: "image", src: "http://example.com/image2.jpg", alt: "Image caption 2" },
+        { type: "paragraph", content: "This is the third paragraph of the article." },
+        { type: "quote", content: "This is a quote from the article." }
+      ],
       author: "Author 1",
       categories: ["Category1", "Category2"],
       tags: ["Tag1", "Tag2"],
@@ -21,7 +28,14 @@ const staticArticlesData = {
     {
       id: 2,
       title: "Article 2",
-      content: "Content for article 2",
+      content_blocks: [
+        { type: "paragraph", content: "This is the first paragraph of the article." },
+        { type: "image", src: "http://example.com/image1.jpg", alt: "Image caption 1" },
+        { type: "paragraph", content: "This is the second paragraph of the article." },
+        { type: "image", src: "http://example.com/image2.jpg", alt: "Image caption 2" },
+        { type: "paragraph", content: "This is the third paragraph of the article." },
+        { type: "quote", content: "This is a quote from the article." }
+      ],
       author: "Author 2",
       categories: ["Category3", "Category4"],
       tags: ["Tag3", "Tag4"],
@@ -49,10 +63,6 @@ const staticArticlesData = {
   ],
 };
 
-// Function to calculate average rating
-const calculateAverageRating = (totalRating, ratingCount) => {
-  return ratingCount === 0 ? 0 : totalRating / ratingCount;
-};
 
 const ReviewArticles = () => {
   const [loading, setLoading] = useState(false);
@@ -136,13 +146,6 @@ const ReviewArticles = () => {
             dataIndex: "views",
           },
           {
-            title: "Average Rating",
-            render: (record) => {
-              const averageRating = calculateAverageRating(record.totalRating, record.ratingCount);
-              return <Rate value={averageRating} allowHalf disabled />;
-            },
-          },
-          {
             title: "Actions",
             render: (record) => (
               <Space size="middle">
@@ -168,8 +171,18 @@ const ReviewArticles = () => {
       >
         {currentArticle && (
           <div>
-            <Typography.Title level={5}>{currentArticle.title}</Typography.Title>
-            <Typography.Paragraph>{currentArticle.content}</Typography.Paragraph>
+           <Typography.Title level={5}>{currentArticle.title}</Typography.Title>
+{currentArticle.content_blocks.map((block, index) => {
+    if (block.type === 'paragraph') {
+        return <Typography.Paragraph key={index}>{block.content}</Typography.Paragraph>;
+    } else if (block.type === 'image') {
+        return <img key={index} src={block.src} alt={block.alt} />;
+    } else if (block.type === 'quote') {
+        return <blockquote key={index}>{block.content}</blockquote>;
+    }
+    return null; // Handle other types if needed
+})}
+
           </div>
         )}
       </Modal>

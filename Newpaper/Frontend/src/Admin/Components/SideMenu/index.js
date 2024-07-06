@@ -4,6 +4,7 @@ import {
   UserOutlined,
   TagsOutlined ,
   CheckCircleOutlined,
+  CopyOutlined 
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
@@ -37,26 +38,31 @@ function SideMenu() {
             key: "/admin",
           },
           {
-            label: "Article",
-            key: "/admin/article",
-            icon: <ShopOutlined />,
-          },
-         ,
-          {
             label: "Users",
             key: "/admin/user",
             icon: <UserOutlined />,
           },
           {
-            label: "Category",
-            key: "/admin/category",
-            icon: <TagsOutlined />,
+            label: "Article",
+            key: "/admin/article",
+            icon: <ShopOutlined />,
           },
           {
             label: "Reviews Articles",
             key: "/admin/review",
             icon: <CheckCircleOutlined/>,
           },
+          {
+            label: "Category",
+            key: "/admin/category",
+            icon: <CopyOutlined />,
+          },
+          {
+            label: "Tag",
+            key: "/admin/tag",
+            icon: <TagsOutlined />,
+          },
+        
         ]}
       ></Menu>
     </div>
