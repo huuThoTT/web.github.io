@@ -23,7 +23,7 @@ function AdminFooter() {
           >
             Terms of Use
           </Typography.Link>
-          <Typography.Text>© {new Date().getFullYear()} Your Company</Typography.Text>
+          <Typography.Text>© {new Date().getFullYear()} NeP</Typography.Text>
         </Space>
       </div>
     </Footer>

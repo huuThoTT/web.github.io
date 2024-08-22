@@ -4,6 +4,7 @@ import Popular from "../popular/Popular"
 import Ppost from "./Ppost/Ppost"
 import ForYou from "./ForYou/ForYou"
 import Interested from "./interested/interested"
+import DailyCategory from "./DailyCategory/DailyCategory"
 import "./style.css"
 
 const Homes = () => {
@@ -16,6 +17,7 @@ const Homes = () => {
             <Ppost />
             <ForYou />
             <Interested />
+            <DailyCategory/>
           </section>
           <section className='sideContent'>
             <Side />

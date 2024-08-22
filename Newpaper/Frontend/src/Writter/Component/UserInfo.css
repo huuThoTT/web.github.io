@@ -1,0 +1,73 @@
+.user-info {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.user-email {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.user-detail {
+    margin: 5px 0;
+    color: #555;
+}
+
+.user-section-title {
+    font-weight: bold;
+    margin-top: 20px;
+    color: #333;
+}
+
+.user-links {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.user-links li {
+    color: #d9534f;
+    cursor: pointer;
+    margin: 5px 0;
+}
+
+.logout {
+    color: #d9534f;
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: left;
+}
+.input-title, .input-author, .input-category, .input-tags, .input-premiere {
+    display: block;
+    margin: 10px 0;
+}
+
+.selected-tags {
+    margin: 10px 0;
+}
+
+.tag {
+    display: inline-block;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.content-type-options button, .save-draft-button, .publish-button, .set-premiere-button {
+    margin: 10px;
+}
+
+.save-draft-button {
+    background-color: #f0ad4e;
+}
+
+.publish-button {
+    background-color: #5bc0de;
+}
+
+.set-premiere-button {
+    background-color: #d9534f;
+}

@@ -60,3 +60,31 @@ header a {
     margin-bottom: 30px;
   }
 }
+.head {
+  cursor: pointer;
+}
+
+.head .logo,
+.head .ad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #514040;
+  padding: 20px;
+}
+
+.head .logo .date,
+.head .ad .date {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+  .head .ad {
+    display: none;
+  }
+}

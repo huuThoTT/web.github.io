@@ -15,7 +15,7 @@ const userSchema = new Schema({
     categories: [
       {
         category: { type: Schema.Types.ObjectId, ref: 'Category' },
-        topics: [String]
+        tags: [String]
       }
     ]
   },

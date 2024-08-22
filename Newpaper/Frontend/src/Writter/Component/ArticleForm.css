@@ -1,0 +1,68 @@
+.article-form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+}
+
+.input-title, .input-author, .input-category, .input-tags {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.tag {
+    background-color: #0275d8;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 4px;
+}
+
+.content-type-options button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.content-type-options button:hover {
+    background-color: #f0f0f0;
+}
+
+.content-block {
+    margin-top: 20px;
+}
+
+.content-block label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.content-block textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.submit-article {
+    padding: 10px 20px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}

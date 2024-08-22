@@ -30,9 +30,7 @@ const Side = () => {
 
   return (
     <>
-      <section className="banner">
-        <img src="https://adsngoaitroi.vn/wp-content/uploads/2021/05/quang-cao-ngoai-troi-an-tuong-660x330.jpg" alt="" />
-      </section>
+     
 
       <section className="catgorys">
        <Tpost/>
@@ -48,6 +46,21 @@ const Side = () => {
             <i className="fa fa-paper-plane"></i> SUBMIT
           </button>
         </form>
+      </section>
+      <section className="banner banner1">
+        <img src="https://adsngoaitroi.vn/wp-content/uploads/2021/05/quang-cao-ngoai-troi-an-tuong-660x330.jpg" alt="Banner 1" />
+      </section>
+      <section className="banner ">
+        <img src="https://adsngoaitroi.vn/wp-content/uploads/2021/05/quang-cao-ngoai-troi-an-tuong-660x330.jpg" alt="Banner 2" />
+      </section>
+      <section className="banner banner3">
+        <img src="https://adsngoaitroi.vn/wp-content/uploads/2021/05/quang-cao-ngoai-troi-an-tuong-660x330.jpg" alt="Banner 3" />
+      </section>
+      <section className="banner banner4">
+        <img src="https://adsngoaitroi.vn/wp-content/uploads/2021/05/quang-cao-ngoai-troi-an-tuong-660x330.jpg" alt="Banner 4" />
+      </section>
+      <section className="banner banner5">
+        <img src="https://adsngoaitroi.vn/wp-content/uploads/2021/05/quang-cao-ngoai-troi-an-tuong-660x330.jpg" alt="Banner 5" />
       </section>
     </>
   );

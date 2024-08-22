@@ -161,4 +161,10 @@ a {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 15px 10px -10px;
 }
 
-
+.sidebar {
+  width: 25%;
+  padding: 20px;
+}
+.writter{
+  display: flex;
+}

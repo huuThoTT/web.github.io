@@ -4,7 +4,7 @@ import "./header.css";
 import { Link } from "react-router-dom";
 import { Drawer, Switch, Button, Menu, Dropdown, Modal, Input, Form, Select } from "antd";
 import { MenuOutlined } from '@ant-design/icons';
-
+import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
 
 const Header = () => {
@@ -122,6 +122,15 @@ const Header = () => {
       }
     ]
   };
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   const handleLogout = () => {
     console.log("User logged out");
@@ -138,16 +147,6 @@ const Header = () => {
   const handleToggleAdFree = () => {
     setUser({ ...user, adFreeSubscription: !user.adFreeSubscription });
   };
-
-  const categoryMenu = (category) => (
-    <Menu>
-      {category.tags.map((tag, index) => (
-        <Menu.Item key={index}>
-          <Link to={`/tag/${tag}`}>{tag}</Link>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
 
   const openModal = () => {
     setModalVisible(true);
@@ -199,7 +198,7 @@ const Header = () => {
               </li>
               {staticCategoryData.categories.slice(0, 9).map((category, index) => (
                 <li key={index}>
-                  <Link to={`/category/${category.name}`} className="ant-dropdown-link hover:text-gray-700">
+                  <Link to={`/${category.name}/${category.tags[0]}`} className="ant-dropdown-link hover:text-gray-700">
                     {category.name}
                   </Link>
                 </li>
@@ -213,57 +212,59 @@ const Header = () => {
             <div className="relative flex items-center space-x-4">
               {user ? (
                 <>
-                  <button onClick={toggleDrawer} className="relative text-blue-700">
-                    Hi, <span>{user.username}</span>
-                  </button>
-                  <Drawer
-                    title="User Info"
-                    placement="right"
-                    onClose={toggleDrawer}
-                    visible={drawerVisible}
-                  >
-                    <p>Username: {user.username}</p>
-                    <p>Email: {user.email}</p>
-                    <div className="py-2">
-                      <label className="text-gray-700">
-                        Enable Notifications
-                        <Switch
-                          checked={user.notificationsEnabled}
-                          onChange={handleToggleNotifications}
-                          className="ml-2"
-                        />
-                      </label>
-                    </div>
-                    <div className="py-2">
-                      <label className="text-gray-700">
-                        Ad-Free Subscription
-                        <Switch
-                          checked={user.adFreeSubscription}
-                          onChange={handleToggleAdFree}
-                          className="ml-2"
-                        />
-                      </label>
-                    </div>
-                    <Button type="primary" className="mt-4" onClick={openEditModal}>
-                      Update Info
-                    </Button>
-                    <Button
-                      type="primary"
-                      danger
-                      className="mt-4"
-                      onClick={handleLogout}
+                  <div className="relative text-blue-700 flex items-center">
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm bài báo..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="border p-2"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSearch}
+                      className="ml-2 p-2 bg-blue-500 text-white"
                     >
-                      Log out
-                    </Button>
-                  </Drawer>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 inline-block"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <Link to="/writer" className="ml-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 inline-block"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </Link>
                 </>
               ) : (
                 <>
                   <Link to="/login" className="navbar-login text-blue-700">
-                    Login
+                    Đăng nhập
                   </Link>
                   <Link to="/register" className="navbar-register text-blue-700">
-                    Register
+                   Đăng ký
                   </Link>
                 </>
               )}
@@ -291,47 +292,18 @@ const Header = () => {
           {staticCategoryData.categories.map((category, index) => (
             <div key={index} className="mb-4">
               <h3 className="font-bold">
-                <Link to={`/category/${category.name}`}>{category.name}</Link>
+                <Link to={`/${category.name}/${category.tags[0]}`}>{category.name}</Link>
               </h3>
               <ul className="ml-4 list-disc">
                 {category.tags.map((tag, tagIndex) => (
                   <li key={tagIndex}>
-                    <Link to={`/tag/${tag}`}>{tag}</Link>
+                    <Link to={`/${category.name}/${tag}`}>{tag}</Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-      </Modal>
-      <Modal
-        visible={editModalVisible}
-        onCancel={closeEditModal}
-        footer={null}
-        title="Update Info"
-      >
-        <Form form={form} onFinish={handleUpdateInfo}>
-          <Form.Item name="username" label="Username" rules={[{ required: true, message: 'Please input your username!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please input your email!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="categories" label="Categories" rules={[{ required: true, message: 'Please select your categories!' }]}>
-            <Select mode="multiple">
-              {staticCategoryData.categories.map(category => (
-                <Option key={category.name} value={category.name}>
-                  {category.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Save
-            </Button>
-          </Form.Item>
-        </Form>
       </Modal>
     </>
   );

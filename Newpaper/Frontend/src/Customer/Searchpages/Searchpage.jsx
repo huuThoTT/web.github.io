@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
-import { Link } from "react-router-dom";
-import Heading from "../../../../common/heading/Heading";
-import "./interested.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Heading from "../common/heading/Heading";
+import "./search.css";
 
 // Dữ liệu mẫu
 const popular = [
@@ -15,7 +15,7 @@ const popular = [
       { type: "quote", content: "This is a sample quote." }
     ],
     author: "Sample Author 1",
-    category: { name: "fun" }, // Cập nhật category để lọc theo "fun"
+    category: { name: "fun" },
     totalRating: 10,
     ratingCount: 5,
     views: 150,
@@ -30,7 +30,7 @@ const popular = [
       { type: "quote", content: "This is a sample quote." }
     ],
     author: "Sample Author 2",
-    category: { name: "fun" }, // Cập nhật category để lọc theo "fun"
+    category: { name: "fun" },
     totalRating: 20,
     ratingCount: 10,
     views: 250,
@@ -45,7 +45,7 @@ const popular = [
       { type: "quote", content: "This is a sample quote." }
     ],
     author: "Sample Author 3",
-    category: { name: "sports" }, // Cập nhật category khác để không được lọc
+    category: { name: "sports" },
     totalRating: 30,
     ratingCount: 15,
     views: 300,
@@ -53,7 +53,18 @@ const popular = [
   }
 ];
 
-const Interested = () => {
+
+const Searchpage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const [searchQuery, setSearchQuery] = useState(queryParams.get("query") || "");
+
+  const handleSearch = () => {
+    // Cập nhật URL với từ khóa tìm kiếm mới
+    navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+  };
+
   const settings = {
     dots: true,
     className: "center",
@@ -69,11 +80,22 @@ const Interested = () => {
   return (
     <>
       <section className='music'>
-        <Heading title='Có thể bạn quan tâm' />
+        <Heading title='Tìm kiếm' />
+        <div className='search-container'>
+  <input
+    type='text'
+    className='search-input'
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    placeholder='Nhập từ khóa tìm kiếm...'
+  />
+</div>
         <div className='content'>
           <Slider {...settings}>
             {popular
-              .filter((val) => val.category.name === "fun") // Lọc theo category
+              .filter((val) =>
+                val.title.toLowerCase().includes(searchQuery.toLowerCase())
+              ) // Lọc theo searchQuery
               .map((val) => {
                 return (
                   <div className='items' key={val._id}>
@@ -81,25 +103,32 @@ const Interested = () => {
                       <div className='images'>
                         {/* Hiển thị hình ảnh từ content_blocks */}
                         {val.content_blocks
-                          .filter(block => block.type === 'image')
+                          .filter((block) => block.type === "image")
                           .map((block, index) => (
                             <div className='img' key={index}>
                               <img src={block.src} alt={block.alt} />
                             </div>
-                        ))}
+                          ))}
                         <div className='category category1'>
                           <span>{val.category.name}</span>
                         </div>
                       </div>
                       <div className='text'>
                         <h1 className='title'>
-                          <Link to={`/SinglePage/${val._id}`}>{val.title.slice(0, 40)}...</Link>
+                          <Link to={`/SinglePage/${val._id}`}>
+                            {val.title.slice(0, 40)}...
+                          </Link>
                         </h1>
                         <div className='date'>
                           <i className='fas fa-calendar-days'></i>
                           <label>{new Date(val.createdAt).toLocaleDateString()}</label>
                         </div>
-                        <p className='desc'>{val.content_blocks.find(block => block.type === 'paragraph')?.content.slice(0, 250)}...</p>
+                        <p className='desc'>
+                          {val.content_blocks.find(
+                            (block) => block.type === "paragraph"
+                          )?.content.slice(0, 250)}
+                          ...
+                        </p>
                         <div className='comment'>
                           <i className='fas fa-share'></i>
                           <label>Share / </label>
@@ -118,4 +147,4 @@ const Interested = () => {
   );
 };
 
-export default Interested;
+export default Searchpage;

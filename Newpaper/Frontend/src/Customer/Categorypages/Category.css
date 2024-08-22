@@ -1,0 +1,147 @@
+/* Navbar */
+.navbar {
+    background-color: #f8f9fa;
+    padding: 10px;
+  }
+  
+  .navbar-list {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navbar-item {
+    list-style-type: none;
+  }
+  
+  .navbar-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .navbar-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Featured Article */
+  .featured-article {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .featured-article-image {
+    width: 200px;
+    height: auto;
+    margin-right: 20px;
+  }
+  
+  .featured-article-content {
+    flex: 1;
+  }
+  
+  .featured-article-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .featured-article-author, .featured-article-time {
+    color: #6c757d;
+  }
+  
+  /* Article List */
+  .article-list {
+    margin-top: 20px;
+  }
+  
+  .article {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .article-title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .article-author, .article-time {
+    color: #6c757d;
+  }
+  
+  .article-content {
+    margin-top: 10px;
+  }
+  
+  /* Advertisement */
+  .advertisement {
+    margin-top: 20px;
+  }
+  .contentWrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .contentMain {
+    flex: 2;
+    padding-right: 20px;
+  }
+  
+  .sideContent {
+    flex: 1;
+    max-width: 300px;
+    padding-left: 20px;
+  }
+  
+  /* Nếu bạn đang sử dụng Tailwind CSS, bạn có thể thêm lớp như sau: */
+  /* .sideContent {
+    @apply md:w-1/3 p-4;
+  } */
+  
+  .popular {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .items {
+    margin-bottom: 20px;
+  }
+  
+  /* Đảm bảo bạn có các quy tắc CSS khác để cấu trúc và trình bày nội dung chính xác */
+  
+  .advertisement img {
+    width: 100%;
+    height: auto;
+  }
+  .popular .box {
+    background-color: #fff;
+    display: flex;
+    /* #18  copy*/
+    /*box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;*/
+    position: relative;
+    margin: 15px 15px 15px 0;
+    /*box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;*/
+  }
+  .popular .images {
+    position: relative;
+    height: 150px;
+  }
+  .popular img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+  .popular .text h1 {
+    padding: 20px 0 0 20px;
+    margin: 0;
+  }
+  .popular .date {
+    margin-top: 15px;
+    padding: 0 0 0 20px;
+  }
+  
+  .popular .comment {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px 0 0 20px;
+    margin-top: 5px;
+  }
+  

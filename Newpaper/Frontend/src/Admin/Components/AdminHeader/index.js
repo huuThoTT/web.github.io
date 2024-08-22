@@ -49,7 +49,7 @@ function AdminHeader() {
       <Avatar
         size={40}
         icon={<UserOutlined />}
-        src="https://baccara-tokyo.com/wp-content/uploads/2021/04/Eimi-Fukada.2-769x1024.png"
+        src="https://cdn.pixabay.com/photo/2014/03/25/16/32/user-297330_1280.png"
         onClick={showAdminInfoDrawer}
         style={{ cursor: "pointer" }}
       />

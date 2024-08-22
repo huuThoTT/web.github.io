@@ -72,3 +72,54 @@
     height: 400px;
   }
 }
+/* Các hiệu ứng khác nhau cho mỗi banner */
+.banner1 img {
+  animation: blink1 2s infinite;
+}
+
+.banner2 img {
+  animation: blink2 3s infinite;
+}
+
+.banner3 img {
+  animation: blink3 1.5s infinite;
+}
+
+.banner4 img {
+  animation: blink4 2.5s infinite;
+}
+
+.banner5 img {
+  animation: blink5 3.5s infinite;
+}
+
+/* Định nghĩa các animation */
+@keyframes blink1 {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+}
+
+@keyframes blink2 {
+  0%, 100% { opacity: 1; transform: rotate(0deg); }
+  50% { opacity: 0.7; transform: rotate(5deg); }
+}
+
+@keyframes blink3 {
+  0%, 100% { opacity: 1; transform: translateX(0); }
+  50% { opacity: 0.3; transform: translateX(10px); }
+}
+
+@keyframes blink4 {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+@keyframes blink5 {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  50% { opacity: 0.6; transform: translateY(10px); }
+}
+
+
+/* Add more animations as needed for additional images */
+
+

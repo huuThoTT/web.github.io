@@ -1,7 +1,6 @@
 
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import PageContent from "./Admin/Components/PageContent";
 import AdminFooter from "./Admin/Components/AdminFooter";
 import AdminHeader from "./Admin/Components/AdminHeader";
 import SideMenu from "./Admin/Components/SideMenu";
@@ -16,9 +15,15 @@ import Header from "./Customer/common/header/Header"
 import Homepages from "./Customer/home/Homepages"
 import Footer from "./Customer/common/footer/Footer"
 import SinglePage from "./Customer/singlePage/SinglePage"
+import Categorypages from "./Customer/Categorypages/Categorypages"
 import Culture from "./Customer/culture/Culture"
 import Login from "./Auth/Login/Login";
 import Register from "./Auth/Register/Register";
+import Writter from "./Writter/Component/ArticleForm"
+import UserInfo from "./Writter/Component/UserInfo";
+import Searchpage from "./Customer/Searchpages/Searchpage";
+import Publish from "./Writter/Component/Publishpage/Publish";
+import Draft from "./Writter/Component/Draftpage/Draft";
 function App() {
   return (
     <div className="App">
@@ -112,17 +117,11 @@ function App() {
           <Footer />
         </div>
       } />
-      <Route path="/category/:id" element={
+
+      <Route path="/:idcate/:idtag" element={
         <div>
           <Header />
-          <p>dd</p>
-          <Footer />
-        </div>
-      } />
-      <Route path="/tag/:id" element={
-        <div>
-          <Header />
-      <p>dd</p>
+     <Categorypages/>
           <Footer />
         </div>
       } />
@@ -130,6 +129,39 @@ function App() {
         <div>
           <Header />
          <Culture/>
+          <Footer />
+        </div>
+      } />
+        <Route path="/writer" element={
+        <div>
+          <div className="writter" >
+          <div className="sidebar">
+                <UserInfo/>
+            </div>
+            <div className="main-content">
+                <Writter />
+            </div>
+            </div>
+        </div>
+      } />
+       <Route path="/search" element={
+        <div>
+          <Header />
+         <Searchpage/>
+          <Footer />
+        </div>
+      } />
+        <Route path="/writer/publish" element={
+        <div>
+          <Header />
+         <Publish/>
+          <Footer />
+        </div>
+      } />
+           <Route path="/writer/draft" element={
+        <div>
+          <Header />
+         <Draft/>
           <Footer />
         </div>
       } />
