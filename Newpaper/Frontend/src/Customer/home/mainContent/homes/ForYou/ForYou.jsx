@@ -1,8 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 import Heading from "../../../../common/heading/Heading";
-
 import "../Ppost/ppost.css";
 
 // Dữ liệu mẫu đã được cập nhật
@@ -16,10 +15,10 @@ const popular = [
       { type: "quote", content: "This is a sample quote." }
     ],
     author: "Sample Author 1",
-    category: "Thể thao" ,
+    category: "Thể thao",
     totalRating: 10,
     ratingCount: 5,
-    views: 150, // Thêm thuộc tính views
+    views: 150,
     createdAt: "2024-08-17T00:00:00Z"
   },
   {
@@ -31,10 +30,10 @@ const popular = [
       { type: "quote", content: "This is a sample quote." }
     ],
     author: "Sample Author 2",
-    category: "Thể thao",
+    category: "Giải trí",
     totalRating: 20,
     ratingCount: 10,
-    views: 250, // Thêm thuộc tính views
+    views: 250,
     createdAt: "2024-08-18T00:00:00Z"
   },
   {
@@ -46,17 +45,20 @@ const popular = [
       { type: "quote", content: "This is a sample quote." }
     ],
     author: "Sample Author 3",
-    category: "Thể thao",
+    category: "Công nghệ",
     totalRating: 30,
     ratingCount: 15,
-    views: 300, // Thêm thuộc tính views
+    views: 300,
     createdAt: "2024-08-19T00:00:00Z"
   }
 ];
 
-// Lọc các bài báo theo danh mục thể thao và sắp xếp theo số lượt xem từ cao đến thấp
-const filteredAndSortedLifestyle = popular
-  .filter(item => item.category === "Thể thao")
+// Giả sử danh mục yêu thích của người dùng được lấy từ thông tin tài khoản
+const userFavoriteCategories = ["Giải trí", "Công nghệ"];
+
+// Lọc các bài báo theo danh mục yêu thích của người dùng và sắp xếp theo số lượt xem từ cao đến thấp
+const filteredAndSortedFavorites = popular
+  .filter(item => userFavoriteCategories.includes(item.category))
   .sort((a, b) => b.views - a.views);
 
 const ForYou = () => {
@@ -83,19 +85,18 @@ const ForYou = () => {
         <Heading title='Dành cho bạn' />
         <div className='content'>
           <Slider {...settings}>
-            {filteredAndSortedLifestyle.map((val) => (
+            {filteredAndSortedFavorites.map((val) => (
               <div className='items' key={val.id}>
                 <div className='box shadow'>
                   <div className='images'>
                     <div className='img'>
-                
-                    {val.content_blocks
-                      .filter(block => block.type === 'image')
-                      .map((block, index) => (
-                        <div className='img' key={index}>
-                          <img src={block.src} alt={block.alt} />
-                        </div>
-                    ))}
+                      {val.content_blocks
+                        .filter(block => block.type === 'image')
+                        .map((block, index) => (
+                          <div className='img' key={index}>
+                            <img src={block.src} alt={block.alt} />
+                          </div>
+                        ))}
                     </div>
                     <div className='category category1'>
                       <span>{val.category}</span>

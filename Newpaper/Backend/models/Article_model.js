@@ -20,8 +20,6 @@ const articleSchema = new Schema({
     views: { type: Number, default: 0 }, 
     totalRating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 }, 
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Article', articleSchema);

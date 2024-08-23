@@ -8,50 +8,102 @@ import "slick-carousel/slick/slick-theme.css";
 const Suggest = ({ category }) => {
   const popular = [
     {
-      id: 1,
-      category: "world",
+      id: "64a1d6f1f1b2b1b7d1c2d3e4", // Giả định ID bài viết
       title: "Our Favorite Photos From All Around",
-      date: "19. February 2022",
-      comments: 0,
-      cover: "../images/popular/pop1.jpg",
-      desc: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+      content_blocks: [
+        {
+          type: "paragraph",
+          content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
+        },
+        {
+          type: "image",
+          src: "https://via.placeholder.com/150",
+          alt: "Sample Image"
+        }
+      ],
+      author: "Author Name",
+      category: "world", // Giả định ID category
+      tags: ["64a1d6f1f1b2b1b7d1c2d3e4"], // Giả định ID tag
+      status: "approved",
+      Publish: true,
+      views: 100,
+      totalRating: 25,
+      ratingCount: 5,
+      date: "2022-02-19"
     },
     {
-      id: 2,
-      category: "world",
-      title: "Places To Visit For A Peaceful Holiday",
-      date: "19. February 2022",
-      comments: 0,
-      cover: "../images/popular/pop2.jpg",
-      desc: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+      id: "64a1d6f1f1b2b1b7d1c2d3e4", // Giả định ID bài viết
+      title: "Our Favorite Photos From All Around",
+      content_blocks: [
+        {
+          type: "paragraph",
+          content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
+        },
+        {
+          type: "image",
+          src: "https://via.placeholder.com/150",
+          alt: "Sample Image"
+        }
+      ],
+      author: "Author Name",
+      category: "world", // Giả định ID category
+      tags: ["64a1d6f1f1b2b1b7d1c2d3e4"], // Giả định ID tag
+      status: "approved",
+      Publish: true,
+      views: 100,
+      totalRating: 25,
+      ratingCount: 5,
+      date: "2022-02-19"
     },
     {
-      id: 3,
-      category: "world",
-      title: "Is This The New Boxing Champion?",
-      date: "19. February 2022",
-      comments: 0,
-      cover: "../images/popular/pop3.jpg",
-      desc: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+      id: "64a1d6f1f1b2b1b7d1c2d3e4", // Giả định ID bài viết
+      title: "Our Favorite Photos From All Around",
+      content_blocks: [
+        {
+          type: "paragraph",
+          content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
+        },
+        {
+          type: "image",
+          src: "https://via.placeholder.com/150",
+          alt: "Sample Image"
+        }
+      ],
+      author: "Author Name",
+      category: "world", // Giả định ID category
+      tags: ["64a1d6f1f1b2b1b7d1c2d3e4"], // Giả định ID tag
+      status: "approved",
+      Publish: true,
+      views: 100,
+      totalRating: 25,
+      ratingCount: 5,
+      date: "2022-02-19"
     },
     {
-      id: 4,
-      category: "world",
-      title: "A Detailed Retelling Of Our Trek Through The Dangerous Alps",
-      date: "19. February 2022",
-      comments: 0,
-      cover: "../images/popular/pop4.jpg",
-      desc: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+      id: "64a1d6f1f1b2b1b7d1c2d3e4", // Giả định ID bài viết
+      title: "Our Favorite Photos From All Around",
+      content_blocks: [
+        {
+          type: "paragraph",
+          content: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit."
+        },
+        {
+          type: "image",
+          src: "https://via.placeholder.com/150",
+          alt: "Sample Image"
+        }
+      ],
+      author: "Author Name",
+      category: "world", // Giả định ID category
+      tags: ["64a1d6f1f1b2b1b7d1c2d3e4"], // Giả định ID tag
+      status: "approved",
+      Publish: true,
+      views: 100,
+      totalRating: 25,
+      ratingCount: 5,
+      date: "2022-02-19"
     },
-    {
-      id: 5,
-      category: "world",
-      title: "Natural Sunlight Boosts Your Immunity",
-      date: "19. February 2022",
-      comments: 0,
-      cover: "../images/popular/pop5.jpg",
-      desc: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
-    },
+    // Thêm các bài viết khác theo cấu trúc tương tự
   ];
 
   // Lọc và chỉ lấy bài viết theo category
@@ -93,9 +145,13 @@ const Suggest = ({ category }) => {
                 <div className="box shadow">
                   <div className="images">
                     <div className="img">
-                      <img src={post.cover} alt={post.title} />
+                      {/* Cập nhật để sử dụng ảnh từ nội dung bài viết */}
+                      {post.content_blocks.find(block => block.type === "image") && (
+                        <img src={post.content_blocks.find(block => block.type === "image").src} alt={post.content_blocks.find(block => block.type === "image").alt} />
+                      )}
                     </div>
                     <div className="category category1">
+                      {/* Cập nhật để sử dụng tên danh mục */}
                       <span>{post.category}</span>
                     </div>
                   </div>

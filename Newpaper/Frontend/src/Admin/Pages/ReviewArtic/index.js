@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space, Typography, Tag, Rate, Modal } from 'antd';
+import { Table, Button, Space, Typography, Tag, Modal } from 'antd';
+import axios from 'axios'; // Import axios để gửi yêu cầu API
 
 // Static articles data for demonstration
 const staticArticlesData = {
@@ -25,44 +26,50 @@ const staticArticlesData = {
       createdAt: new Date(),
       updatedAt: new Date(),
     },
-    {
-      id: 2,
-      title: "Article 2",
-      content_blocks: [
-        { type: "paragraph", content: "This is the first paragraph of the article." },
-        { type: "image", src: "http://example.com/image1.jpg", alt: "Image caption 1" },
-        { type: "paragraph", content: "This is the second paragraph of the article." },
-        { type: "image", src: "http://example.com/image2.jpg", alt: "Image caption 2" },
-        { type: "paragraph", content: "This is the third paragraph of the article." },
-        { type: "quote", content: "This is a quote from the article." }
-      ],
-      author: "Author 2",
-      categories: ["Category3", "Category4"],
-      tags: ["Tag3", "Tag4"],
-      status: "pending",
-      views: 50,
-      totalRating: 40,
-      ratingCount: 8,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 3,
-      title: "Article 3",
-      content: "Content for article 3",
-      author: "Author 3",
-      categories: ["Category5", "Category6"],
-      tags: ["Tag5", "Tag6"],
-      status: "pending",
-      views: 200,
-      totalRating: 45,
-      ratingCount: 9,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
+    // Các bài viết khác...
   ],
 };
 
+// Giả sử đây là user mẫu có trường Subscribe
+const users = [
+  {
+    _id: "64e555fbf4a3a2b0b2d9f80c",
+    username: "johndoe",
+    email: "johndoe@example.com",
+    Subscribe: true,
+  },
+  {
+    _id: "64e555fbf4a3a2b0b2d9f80d",
+    username: "janedoe",
+    email: "janedoe@example.com",
+    Subscribe: true,
+  },
+  {
+    _id: "64e555fbf4a3a2b0b2d9f80e",
+    username: "nonSubscriber",
+    email: "nonsubscriber@example.com",
+    Subscribe: false,
+  },
+  // Các user khác...
+];
+
+// Hàm gửi email thông báo
+const sendApprovalNotification = (article) => {
+  users.forEach((user) => {
+    if (user.Subscribe) {
+      // Gửi yêu cầu API để gửi email (giả sử bạn có API để xử lý việc này)
+      axios.post('/api/send-email', {
+        to: user.email,
+        subject: `Bài viết "${article.title}" đã được phê duyệt`,
+        body: `Xin chào ${user.username},\n\nBài viết "${article.title}" đã được phê duyệt và bạn có thể đọc nó trên trang web của chúng tôi.\n\nCảm ơn!`,
+      }).then((response) => {
+        console.log(`Email sent to ${user.email}`);
+      }).catch((error) => {
+        console.error(`Failed to send email to ${user.email}`, error);
+      });
+    }
+  });
+};
 
 const ReviewArticles = () => {
   const [loading, setLoading] = useState(false);
@@ -72,17 +79,18 @@ const ReviewArticles = () => {
 
   useEffect(() => {
     setLoading(true);
-    // Simulating API call with static data
     setTimeout(() => {
       setDataSource(staticArticlesData.articles);
       setLoading(false);
-    }, 300); // Simulating loading time
+    }, 300);
   }, []);
 
   const handleApprove = (id) => {
     const updatedArticles = dataSource.map((article) => {
       if (article.id === id) {
-        return { ...article, status: 'approved' };
+        const approvedArticle = { ...article, status: 'approved' };
+        sendApprovalNotification(approvedArticle); // Gửi email thông báo
+        return approvedArticle;
       }
       return article;
     });
@@ -171,18 +179,17 @@ const ReviewArticles = () => {
       >
         {currentArticle && (
           <div>
-           <Typography.Title level={5}>{currentArticle.title}</Typography.Title>
-{currentArticle.content_blocks.map((block, index) => {
-    if (block.type === 'paragraph') {
-        return <Typography.Paragraph key={index}>{block.content}</Typography.Paragraph>;
-    } else if (block.type === 'image') {
-        return <img key={index} src={block.src} alt={block.alt} />;
-    } else if (block.type === 'quote') {
-        return <blockquote key={index}>{block.content}</blockquote>;
-    }
-    return null; // Handle other types if needed
-})}
-
+            <Typography.Title level={5}>{currentArticle.title}</Typography.Title>
+            {currentArticle.content_blocks.map((block, index) => {
+              if (block.type === 'paragraph') {
+                return <Typography.Paragraph key={index}>{block.content}</Typography.Paragraph>;
+              } else if (block.type === 'image') {
+                return <img key={index} src={block.src} alt={block.alt} />;
+              } else if (block.type === 'quote') {
+                return <blockquote key={index}>{block.content}</blockquote>;
+              }
+              return null; // Handle other types if needed
+            })}
           </div>
         )}
       </Modal>

@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "./side.css";
-import "../Tpost/Tpost"
-import Heading from "../../../common/heading/Heading";
-import { Link } from "react-router-dom";
-import Tpost from "../Tpost/Tpost";
+import axios from "axios";
+import Heading from "../../common/heading/Heading";
 
 const Side = () => {
   const user = {
@@ -55,19 +52,14 @@ const Side = () => {
       alert("Failed to update subscription. Please try again.");
     }
   };
+
   return (
     <>
-     
-
-      <section className="catgorys">
-       <Tpost/>
-      </section>
-
-      <Heading title="Subscribe" />
+     <Heading title="Subscribe" />
       <section className="subscribe">
-        <h1 className="title">Subscribe to our New Stories</h1>
+        <h1 className="title">Đăng ký để nhận thông báo về các bài báo mới nhất</h1>
         <button onClick={handleSubscribe}>
-          <i className="fa fa-paper-plane"></i> SUBSCRIBE
+          <i className="fa fa-paper-plane"></i> ĐĂNG KÝ
         </button>
       </section>
       <section className="banner banner1">

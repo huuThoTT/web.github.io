@@ -4,7 +4,7 @@ import './Category.css';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Side from "../home/sideContent/side/Side";
+import Side from "./sideCate/Side";
 import "../home/mainContent/homes/style.css";
 import "../home/sideContent/side/side.css";
 // Dữ liệu bài viết giả lập
@@ -230,37 +230,47 @@ const Popular = ({ tag }) => {
       <div className='contentWrapper'>
         <div className='contentMain'>
           <Slider {...settings}>
-            {filteredArticles.length > 0 ? (
-              filteredArticles.map((val) => (
-                <div className='items' key={val.id}>
-                  <div className='box shadow'>
-                    <div className='images row'>
-                      <div className='img'>
-                        <img src={val.cover} alt='' />
-                      </div>
-                      <div className='category category1'>
-                        <span>{val.tags}  </span>
-                      </div>
-                    </div>
-                    <div className='text row'>
-                      <Link to={`/SinglePage/${val.id}`}>
-                        <h1 className='title'>{val.title.slice(0, 40)}...</h1>
-                      </Link>
-                      <div className='date'>
-                        <i className='fas fa-calendar-days'></i>
-                        <label>{val.date}</label>
-                      </div>
-                      <div className='comment'>
-                        <i className='fas fa-comments'></i>
-                        <label>{val.comments}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          {filteredArticles.length > 0 ? (
+  filteredArticles.map((val) => (
+    <div className='items' key={val.id}>
+      <div className='box shadow'>
+        <div className='images row'>
+          <div className='img'>
+            <img src={val.cover} alt='' />
+          </div>
+          <div className='category category1'>
+            {val.tags.length > 0 ? (
+              val.tags.map((tag, index) => (
+                <span key={index} className='tag-item'>
+                  {tag}
+                  {index < val.tags.length - 1 && ', '}
+                </span>
               ))
             ) : (
-              <div>No articles found for this tag.</div>
+              <span>No tags</span>
             )}
+          </div>
+        </div>
+        <div className='text row'>
+          <Link to={`/SinglePage/${val.id}`}>
+            <h1 className='title'>{val.title.slice(0, 40)}...</h1>
+          </Link>
+          <div className='date'>
+            <i className='fas fa-calendar-days'></i>
+            <label>{val.date}</label>
+          </div>
+          <div className='comment'>
+            <i className='fas fa-comments'></i>
+            <label>{val.comments}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  ))
+) : (
+  <div>No articles found for this tag.</div>
+)}
+
           </Slider>
         </div>
         <aside className="sideContent">

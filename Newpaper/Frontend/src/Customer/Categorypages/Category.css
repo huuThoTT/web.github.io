@@ -86,11 +86,7 @@
     padding-right: 20px;
   }
   
-  .sideContent {
-    flex: 1;
-    max-width: 300px;
-    padding-left: 20px;
-  }
+
   
   /* Nếu bạn đang sử dụng Tailwind CSS, bạn có thể thêm lớp như sau: */
   /* .sideContent {

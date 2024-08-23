@@ -1,20 +1,8 @@
-import { Avatar, Badge, Drawer, Image, List, Space, Typography, Form, Input, Button } from "antd";
+import { Avatar, Badge, Drawer, List, Space, Typography, Form, Input, Button } from "antd";
 import { BellFilled, MailOutlined, UserOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./header.css";
-
-// Static data for comments and orders for demonstration
-const staticCommentsData = [
-  { id: 1, body: "This is a comment." },
-  { id: 2, body: "Another comment here." },
-  { id: 3, body: "Yet another comment." },
-];
-
-const staticOrdersData = [
-  { id: 1, title: "Product A" },
-  { id: 2, title: "Product B" },
-  { id: 3, title: "Product C" },
-];
 
 function AdminHeader() {
   const [commentsOpen, setCommentsOpen] = useState(false);
@@ -25,9 +13,28 @@ function AdminHeader() {
     password: "********",
     email: "admin@example.com",
   });
+  const [comments, setComments] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
-  const comments = staticCommentsData;
-  const orders = staticOrdersData;
+  useEffect(() => {
+    // Lấy dữ liệu bình luận mới nhất
+    axios.get("/api/comments")
+      .then(response => {
+        setComments(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching comments:", error);
+      });
+
+    // Lấy bài báo mới nhất với trạng thái pending
+    axios.get("/api/articles/pending")
+      .then(response => {
+        setNotifications(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching notifications:", error);
+      });
+  }, []);
 
   const showAdminInfoDrawer = () => {
     setAdminInfoVisible(true);
@@ -65,7 +72,7 @@ function AdminHeader() {
             }}
           />
         </Badge>
-        <Badge count={orders.length}>
+        <Badge count={notifications.length}>
           <BellFilled
             style={{ fontSize: 24 }}
             onClick={() => {
@@ -85,7 +92,7 @@ function AdminHeader() {
         <List
           dataSource={comments}
           renderItem={(item) => {
-            return <List.Item>{item.body}</List.Item>;
+            return <List.Item>{item.content}</List.Item>;
           }}
         />
       </Drawer>
@@ -98,12 +105,11 @@ function AdminHeader() {
         maskClosable
       >
         <List
-          dataSource={orders}
+          dataSource={notifications}
           renderItem={(item) => {
             return (
               <List.Item>
-                <Typography.Text strong>{item.title}</Typography.Text> has been
-                ordered!
+                <Typography.Text strong>{item.title}</Typography.Text> is pending review!
               </List.Item>
             );
           }}

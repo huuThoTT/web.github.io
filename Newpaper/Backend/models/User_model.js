@@ -19,13 +19,11 @@ const userSchema = new Schema({
       }
     ]
   },
-  Subscribe: { type: String, required: true, unique: true },
+  Subscribe: { type: Boolean, default :false },
   notificationsEnabled: { type: Boolean, default: true },
   bookmarkedArticles: [{ type: Schema.Types.ObjectId, ref: 'Article' }],
   adFreeSubscription: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
+}, { timestamps: true });
 
 // Middleware to update updatedAt before save
 userSchema.pre('save', function(next) {
