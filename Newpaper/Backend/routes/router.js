@@ -5,9 +5,9 @@ const articleController = require('../controllers/Article_controller');
 const categoryController = require('../controllers/Category_controller');
 const commentController = require('../controllers/Comment_controller');
 const notificationController = require('../controllers/Notification_controller');
-const subscriptionController = require('../controllers/Subscription_controller');
 const advertisementController = require('../controllers/Advertisement_controller');
 const { verifyToken, authorize, verifyTokenAndUserAuthorization, verifyTokenAndAdmin,} = require("../middleware/userVerifyToken");
+const { verifyToken,  verifyTokenAndUserAuthorization, verifyTokenAndAdmin,} = require("../middleware/userVerifyToken");
 // User routes
 router.get('/users', verifyToken, userController.getAll);
 router.post('/users/register', userController.register);
@@ -44,11 +44,6 @@ router.delete('/comments/:id', verifyTokenAndUserAuthorization, commentControlle
 // Notification routes
 router.get('/notifications', verifyToken, notificationController.getAllByUser);
 router.put('/notifications/:id', verifyToken, notificationController.markAsRead);
-
-// Subscription routes
-router.post('/subscriptions', verifyToken, subscriptionController.create);
-router.get('/subscriptions', verifyToken, subscriptionController.getByUser);
-router.delete('/subscriptions/:id', verifyToken, subscriptionController.cancel);
 
 //LOG OUT
 router.post("/logout", verifyToken, userController.logOut);

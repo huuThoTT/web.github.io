@@ -73,3 +73,50 @@ const Tpost = () => {
 };
 
 export default Tpost;
+
+/*
+import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Heading from "../../../common/heading/Heading";
+import "./tpost.css";
+
+const Tpost = () => {
+  // Lấy dữ liệu article từ redux store
+const articles = useSelector((state) => state.article.getArticle.articles);
+
+  // Lọc các bài báo có danh mục là "genz"
+  const filteredArticles = articles.filter((article) => article.category === "genz");
+
+  return (
+    <>
+      <section className="tpost">
+        <Heading title="GenZ" />
+        {filteredArticles.map((val, index) => (
+          <div className="box flexSB" key={index}>
+            <div className="img">
+    
+              {val.content_blocks.find((block) => block.type === "image") && (
+                <img
+                  src={val.content_blocks.find((block) => block.type === "image").src}
+                  alt={val.content_blocks.find((block) => block.type === "image").alt}
+                />
+              )}
+            </div>
+            <div className="text">
+              <h1 className="title">
+            
+                <Link to={`/SinglePage/${val._id}`}>{val.title.slice(0, 35)}...</Link>
+              </h1>
+              <span>{new Date(val.createdAt).toDateString()}</span>
+            </div>
+          </div>
+        ))}
+      </section>
+    </>
+  );
+};
+
+export default Tpost;
+
+*/

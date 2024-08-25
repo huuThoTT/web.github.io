@@ -122,3 +122,86 @@ const DailyCategory = () => {
 };
 
 export default DailyCategory;
+
+/*
+import React, { useState } from "react";
+import Slider from "react-slick";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Heading from "../../../../common/heading/Heading";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./DailyCategory.css";
+
+const DailyCategory = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  // Lấy dữ liệu articles từ Redux store
+  const articles = useSelector((state) => state.article.getArticle.articles);
+
+  // Lọc dữ liệu theo ngày
+  const filteredArticles = articles.filter((article) => {
+    const articleDate = new Date(article.createdAt).toLocaleDateString();
+    return articleDate === selectedDate.toLocaleDateString();
+  });
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  return (
+    <>
+      <section className='dailyCategory'>
+        <Heading title='Danh mục theo ngày' />
+        <div className='date-picker'>
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            dateFormat="dd/MM/yyyy"
+            className="date-picker-input"
+          />
+        </div>
+        <div className='content'>
+          {filteredArticles.length > 0 ? (
+            <Slider {...settings}>
+              {filteredArticles.map((val) => (
+                <div className='items' key={val._id}>
+                  <div className='box shadow'>
+                    <div className='images'>
+                      {val.content_blocks.map((block, index) =>
+                        block.type === "image" ? (
+                          <div className='img' key={index}>
+                            <img src={block.src} alt={block.alt} />
+                          </div>
+                        ) : null
+                      )}
+                    </div>
+                    <div className='text'>
+                      <Link to={`/SinglePage/${val._id}`}>
+                        <h1 className='title'>{val.title.slice(0, 40)}...</h1>
+                      </Link>
+                      <div className='date'>
+                        <i className='fas fa-calendar-days'></i>
+                        <label>{new Date(val.createdAt).toLocaleDateString()}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          ) : (
+            <p>Không có bài báo nào cho ngày đã chọn.</p>
+          )}
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default DailyCategory;
+
+*/

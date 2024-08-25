@@ -122,3 +122,92 @@ const ForYou = () => {
 };
 
 export default ForYou;
+
+/*
+import React from "react";
+import Slider from "react-slick";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Heading from "../../../../common/heading/Heading";
+import "../Ppost/ppost.css";
+
+const ForYou = () => {
+  // Lấy dữ liệu bài viết và danh mục yêu thích từ Redux store
+ const user = useSelector((state) => state.auth.login.currentUser);
+
+// Extract favorite categories from the user's preferences
+const userFavoriteCategories = user?.preferences?.categories?.map(pref => pref.category.toString()) || [];
+
+// Filter articles based on the user's favorite categories and sort by views
+const filteredAndSortedFavorites = articles
+  .filter(article => userFavoriteCategories.includes(article.category.toString())) // Ensure category comparison consistency
+  .sort((a, b) => b.views - a.views);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <>
+      <section className='popularPost life'>
+        <Heading title='Dành cho bạn' />
+        <div className='content'>
+          <Slider {...settings}>
+            {filteredAndSortedFavorites.length > 0 ? (
+              filteredAndSortedFavorites.map((val) => (
+                <div className='items' key={val._id}>
+                  <div className='box shadow'>
+                    <div className='images'>
+                      <div className='img'>
+                        {val.content_blocks
+                          .filter(block => block.type === 'image')
+                          .map((block, index) => (
+                            <div className='img' key={index}>
+                              <img src={block.src} alt={block.alt} />
+                            </div>
+                          ))}
+                      </div>
+                      <div className='category category1'>
+                        <span>{val.category}</span>
+                      </div>
+                    </div>
+                    <div className='text'>
+                      <h1 className='title'>
+                        <Link to={`/SinglePage/${val._id}`}>
+                          {val.title.slice(0, 40)}...
+                        </Link>
+                      </h1>
+                      <div className='date'>
+                        <i className='fas fa-calendar-days'></i>
+                        <label>{new Date(val.createdAt).toLocaleDateString()}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Không có bài báo nào cho danh mục yêu thích của bạn.</p>
+            )}
+          </Slider>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default ForYou;
+
+*/

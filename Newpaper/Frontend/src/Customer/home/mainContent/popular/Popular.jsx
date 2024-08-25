@@ -168,3 +168,90 @@ const Popular = () => {
 };
 
 export default Popular;
+/*
+import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Heading from "../../../common/heading/Heading";
+import "./Popular.css";
+
+const Popular = () => {
+  // Lấy dữ liệu articles từ Redux store
+  const articles = useSelector((state) => state.article.articles);
+
+  const settings = {
+    className: "center",
+    centerMode: false,
+    dots: true,
+    infinite: true,
+    centerPadding: "0",
+    slidesToShow: 2,
+    speed: 500,
+    rows: 1,
+    slidesPerRow: 1,
+    responsive: [
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          rows: 1,
+        },
+      },
+    ],
+  };
+
+  // Giả sử bạn muốn lấy các bài viết có nhiều lượt xem nhất hoặc xếp hạng cao nhất, lọc bài viết từ Redux store
+  const popularArticles = articles.slice(4); // Lấy từ phần tử thứ 5 trở đi, có thể tùy chỉnh theo nhu cầu
+
+  return (
+    <>
+      <section className="popular">
+        <Heading title="Báo mới" />
+        <div className="content">
+          <Slider {...settings}>
+            {popularArticles.map((val) => {
+              // Lấy thông tin hình ảnh từ content_blocks
+              const coverImage = val.content_blocks.find((block) => block.type === "image")?.src || "";
+
+              return (
+                <div className="items" key={val._id}>
+                  <div className="box shadow">
+                    <div className="images row">
+                      <div className="img">
+                        <img src={coverImage} alt={val.title} />
+                      </div>
+                      <div className="category category1">
+                        <span>{val.category?.name}</span>
+                      </div>
+                    </div>
+                    <div className="text row">
+                      <Link to={`/popular/${val._id}`}>
+                        <h1 className="title">{val.title.slice(0, 40)}...</h1>
+                      </Link>
+                      <div className="date">
+                        <i className="fas fa-calendar-days"></i>
+                        <label>{new Date(val.createdAt).toLocaleDateString()}</label>
+                      </div>
+                      <div className="comment">
+                        <i className="fas fa-comments"></i>
+                        <label>{val.ratingCount} comments</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </Slider>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Popular;
+
+*/

@@ -79,3 +79,32 @@ const Hero = () => {
 };
 
 export default Hero;
+/*
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import "./hero.css";
+import Card from "./Card";
+
+const Hero = () => {
+  // Lấy dữ liệu từ Redux store
+  const articles = useSelector((state) => state.article.getArticle.articles);
+
+  // Chỉ lấy 4 mục đầu tiên để hiển thị
+  const [items, setItems] = useState(articles.slice(0, 4));
+
+  return (
+    <>
+      <section className='hero'>
+        <div className='container'>
+          {items.map((item) => (
+            <Card key={item._id} item={item} />
+          ))}
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Hero;
+
+*/

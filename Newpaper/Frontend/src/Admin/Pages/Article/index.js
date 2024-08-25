@@ -4,30 +4,21 @@ import { Button, Table, Modal, Form, Input, Space, Typography, Select, Rate } fr
 const { Option } = Select;
 
 const staticCategoryData = {
-  "categories": [
+  categories: [
     {
-      "name": "Thời sự",
-      "tags": [
-        "Chính trị",
-        "Xã hội",
-        "Quốc tế",
-        "Giao thông",
-        "Môi trường"
-      ]
+      name: "Thời sự",
+      tags: ["Chính trị", "Xã hội", "Quốc tế", "Giao thông", "Môi trường"],
     },
     {
-      "name": "Khoa học",
-      "tags": [
-        "Công nghệ",
-        "Khám phá",
-        "Nghiên cứu"
-      ]
+      name: "Khoa học",
+      tags: ["Công nghệ", "Khám phá", "Nghiên cứu"],
     },
     // Add more categories as needed
-  ]
+  ],
 };
 
 const getCategories = () => staticCategoryData.categories.map(category => category.name);
+
 const getTags = (categoryName) => {
   const category = staticCategoryData.categories.find(cat => cat.name === categoryName);
   return category ? category.tags : [];
@@ -35,44 +26,7 @@ const getTags = (categoryName) => {
 
 const staticArticlesData = {
   articles: [
-    {
-      _id: "1",
-      title: "Tech Article 1",
-      content_blocks: [
-        { type: "paragraph", content: "This is the first paragraph of the article." },
-        { type: "image", src: "http://example.com/image1.jpg", alt: "Image caption 1" },
-        { type: "paragraph", content: "This is the second paragraph of the article." },
-        { type: "image", src: "http://example.com/image2.jpg", alt: "Image caption 2" },
-        { type: "paragraph", content: "This is the third paragraph of the article." },
-        { type: "quote", content: "This is a quote from the article." }
-      ],
-      author: "John Doe",
-      categories: ["Tech"],
-      tags: ["AI"],
-      status: "approved",
-      views: 100,
-      totalRating: 45,
-      ratingCount: 9,
-    },
-    {
-      _id: "2",
-      title: "Health Article 1",
-      content_blocks: [
-        { type: "paragraph", content: "This is the first paragraph of the article." },
-        { type: "image", src: "http://example.com/image1.jpg", alt: "Image caption 1" },
-        { type: "paragraph", content: "This is the second paragraph of the article." },
-        { type: "image", src: "http://example.com/image2.jpg", alt: "Image caption 2" },
-        { type: "paragraph", content: "This is the third paragraph of the article." },
-        { type: "quote", content: "This is a quote from the article." }
-      ],
-      author: "Jane Smith",
-      categories: ["Health"],
-      tags: ["Fitness"],
-      status: "approved",
-      views: 150,
-      totalRating: 45,
-      ratingCount: 9,
-    },
+    // Articles data here...
   ],
 };
 
@@ -82,8 +36,8 @@ const Article = () => {
   const [filteredData, setFilteredData] = useState(staticArticlesData.articles);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingArticle, setEditingArticle] = useState(null);
-  const [form] = Form.useForm();
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     setLoading(true);
@@ -92,10 +46,6 @@ const Article = () => {
       setLoading(false);
     }, 300);
   }, []);
-
-  const calculateAverageRating = (totalRating, ratingCount) => {
-    return ratingCount === 0 ? 0 : totalRating / ratingCount;
-  };
 
   const handleAdd = () => {
     setEditingArticle(null);
@@ -106,6 +56,7 @@ const Article = () => {
   const handleEdit = (record) => {
     setEditingArticle(record);
     form.setFieldsValue(record);
+    setSelectedCategory(record.categories[0]);
     setIsModalVisible(true);
   };
 
@@ -136,6 +87,218 @@ const Article = () => {
       setFilteredData(newData);
     }
     setIsModalVisible(false);
+  };
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    form.setFieldsValue({ tags: [] }); // Reset tags field when category changes
+  };
+
+  return (
+    <Space direction="vertical" size={20}>
+      <Typography.Title level={4}>Article Management</Typography.Title>
+      <Space direction="horizontal">
+        <Button type="primary" onClick={handleAdd}>Add Article</Button>
+        <Input.Search
+          placeholder="Search articles"
+          enterButton
+          onSearch={(value) => setFilteredData(dataSource.filter((article) =>
+            article.title.toLowerCase().includes(value.toLowerCase()) ||
+            article.author.toLowerCase().includes(value.toLowerCase())
+          ))}
+        />
+      </Space>
+      <Table
+        loading={loading}
+        dataSource={filteredData}
+        rowKey="_id"
+        columns={[
+          {
+            title: "Title",
+            dataIndex: "title",
+          },
+          {
+            title: "Author",
+            dataIndex: "author",
+          },
+          {
+            title: "Category",
+            dataIndex: "categories",
+            render: (categories) => <span>{categories[0]}</span>,
+          },
+          {
+            title: "Tags",
+            dataIndex: "tags",
+            render: (tags) => (
+              <ul>
+                {tags.map((tag, index) => (
+                  <li key={index}>{tag}</li>
+                ))}
+              </ul>
+            ),
+          },
+          {
+            title: "Average Rating",
+            render: (record) => {
+              const averageRating = record.ratingCount === 0 ? 0 : record.totalRating / record.ratingCount;
+              return <Rate value={averageRating} allowHalf disabled />;
+            },
+          },
+          {
+            title: "Actions",
+            render: (text, record) => (
+              <Space>
+                <Button onClick={() => handleEdit(record)}>Edit</Button>
+                <Button danger onClick={() => handleDelete(record)}>Delete</Button>
+              </Space>
+            ),
+          },
+        ]}
+      />
+
+      <Modal
+        title={editingArticle ? "Edit Article" : "Add Article"}
+        visible={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={null}
+      >
+        <Form form={form} initialValues={editingArticle} onFinish={handleSave}>
+          <Form.Item
+            name="title"
+            label="Article Title"
+            rules={[{ required: true, message: 'Please input the article title!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="author"
+            label="Author"
+            rules={[{ required: true, message: 'Please input the author!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="categories"
+            label="Category"
+            rules={[{ required: true, message: 'Please select a category!' }]}
+          >
+            <Select
+              style={{ width: '100%' }}
+              placeholder="Select a category"
+              onChange={handleCategoryChange}
+            >
+              {getCategories().map(category => (
+                <Option key={category} value={category}>{category}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          {selectedCategory && (
+            <Form.Item
+              name="tags"
+              label="Tags"
+              rules={[{ required: true, message: 'Please select at least one tag!' }]}
+            >
+              <Select mode="multiple" style={{ width: '300px' }} placeholder="Select tags">
+                {getTags(selectedCategory).map(tag => (
+                  <Option key={tag} value={tag}>{tag}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Save
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </Space>
+  );
+};
+
+export default Article;
+
+
+/*
+import React, { useState, useEffect } from 'react';
+import { Button, Table, Modal, Form, Input, Space, Typography, Select, Rate } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategories as fetchCategories, getArticle as fetchArticles, updateArticle as saveArticle, deleteArticle as removeArticle } from '../../../redux/apiRequest';
+
+const { Option } = Select;
+
+const Article = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [dataSource, setDataSource] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingArticle, setEditingArticle] = useState(null);
+  const [form] = Form.useForm();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const { categories } = useSelector(state => state.category);
+  const { articles } = useSelector(state => state.article);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(fetchCategories());
+      await dispatch(fetchArticles());
+      setLoading(false);
+    };
+    
+    fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    setDataSource(articles);
+    setFilteredData(articles);
+  }, [articles]);
+
+  const calculateAverageRating = (totalRating, ratingCount) => {
+    return ratingCount === 0 ? 0 : totalRating / ratingCount;
+  };
+
+  const handleAdd = () => {
+    setEditingArticle(null);
+    form.resetFields();
+    setIsModalVisible(true);
+  };
+
+  const handleEdit = (record) => {
+    setEditingArticle(record);
+    form.setFieldsValue(record);
+    setIsModalVisible(true);
+  };
+
+  const handleDelete = async (record) => {
+    setLoading(true);
+    await dispatch(removeArticle(record._id));
+    setLoading(false);
+  };
+
+  const handleSave = async (values) => {
+    setLoading(true);
+    if (editingArticle) {
+      // Update existing article
+      await dispatch(saveArticle({ ...editingArticle, ...values }));
+    } else {
+      // Add new article
+      const newArticle = {
+        _id: (dataSource.length + 1).toString(),
+        ...values,
+        status: 'pending',
+        views: 0,
+        totalRating: 0,
+        ratingCount: 0,
+      };
+      await dispatch(saveArticle(newArticle));
+    }
+    // Fetch updated articles
+    await dispatch(fetchArticles());
+    setIsModalVisible(false);
+    setLoading(false);
   };
 
   const handleSearch = (value) => {
@@ -222,14 +385,14 @@ const Article = () => {
           </Form.Item>
           <Form.Item name="categories" label="Categories" rules={[{ required: true, message: 'Please select a category!' }]}>
             <Select style={{ width: '100%' }} placeholder="Select categories" onChange={handleCategoryChange}>
-              {getCategories().map(category => (
-                <Option key={category} value={category}>{category}</Option>
+              {categories.map(category => (
+                <Option key={category.name} value={category.name}>{category.name}</Option>
               ))}
             </Select>
           </Form.Item>
           {selectedCategory && (
             <Form.Item name="tags" label="Tags" rules={[{ required: true, message: 'Please select at least one tag!' }]}>
-              <Select  style={{ width: '100%' }} placeholder="Select tags">
+              <Select mode="multiple" style={{ width: '100%' }} placeholder="Select tags">
                 {getTags(selectedCategory).map(tag => (
                   <Option key={tag} value={tag}>{tag}</Option>
                 ))}
@@ -325,3 +488,5 @@ const Article = () => {
 };
 
 export default Article;
+
+*/

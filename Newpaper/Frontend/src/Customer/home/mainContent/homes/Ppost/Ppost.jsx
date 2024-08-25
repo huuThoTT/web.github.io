@@ -121,3 +121,85 @@ const Popular = () => {
 };
 
 export default Popular;
+/*
+import React from "react";
+import Slider from "react-slick";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Heading from "../../../../common/heading/Heading";
+import "./ppost.css";
+
+const Popular = () => {
+  // Lấy dữ liệu bài viết từ Redux store
+const articles = useSelector((state) => state.article.getArticle.articles);
+
+  // Sắp xếp bài viết theo số lượt xem từ cao đến thấp
+  const sortedPopular = articles.slice().sort((a, b) => b.views - a.views);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    rows: 1,
+    slidesPerRow: 1,
+    responsive: [
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          rows: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <>
+      <section className='popular'>
+        <Heading title='Phổ biến' />
+        <div className='content'>
+          <Slider {...settings}>
+            {sortedPopular.map((val) => (
+              <div className='items' key={val._id}>
+                <div className='box shadow'>
+                  <div className='images row'>
+                    {val.content_blocks
+                      .filter(block => block.type === 'image')
+                      .map((block, index) => (
+                        <div className='img' key={index}>
+                          <img src={block.src} alt={block.alt} />
+                        </div>
+                    ))}
+                    <div className='category category1'>
+                      <span>{val.category.name || val.category}</span>
+                    </div>
+                  </div>
+                  <div className='text row'>
+                    <Link to={`/SinglePage/${val._id}`}>
+                      <h1 className='title'>{val.title.slice(0, 40)}...</h1>
+                    </Link>
+                    <div className='date'>
+                      <i className='fas fa-calendar-days'></i>
+                      <label>{new Date(val.createdAt).toLocaleDateString()}</label>
+                    </div>
+                    <div className='views'>
+                      <i className='fas fa-eye'></i>
+                      <label>{val.views} views</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Popular;
+
+*/
