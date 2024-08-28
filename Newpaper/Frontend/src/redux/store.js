@@ -4,6 +4,8 @@ import userReducer from "./userSlice";
 import articleReducer from "./articleSlice";
 import categoryReducer from "./categorySlice";
 import tagReducer from "./tagSlice";
+import commentReducer from "./commentSlice";
+import ratingReducer from "./ratingSlice";
 import {
   persistStore,
   persistReducer,
@@ -21,7 +23,7 @@ const persistConfig = {
   version: 1,
   storage,
 };
-const rootReducer = combineReducers({ auth: authReducer, users: userReducer, article: articleReducer ,categor: categoryReducer, tag: tagReducer});
+const rootReducer = combineReducers({ auth: authReducer, user: userReducer, article: articleReducer ,category: categoryReducer, tag: tagReducer,comment : commentReducer,rating : ratingReducer});
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

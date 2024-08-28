@@ -19,6 +19,17 @@ const articleSlice = createSlice({
       loading: false,
       error: false,
     },
+    getArticlePending: {
+      articlesPending: [],
+      loading: false,
+      error: false,
+    },
+    updateArticlePending: {
+      articlesPending: null,
+      loading: false,
+      error: false,
+    },
+   
   },
   reducers: {
     getArticleStart: (state) => {
@@ -57,6 +68,29 @@ const articleSlice = createSlice({
       state.deleteArticle.loading = false;
       state.deleteArticle.error = true;
     },
+
+    getArticlePendingStart: (state) => {
+
+    },
+    getArticlePendingSuccess: (state, action) => {
+      state.getArticlePending.loading = false;
+      state.getArticlePending.articlesPending = action.payload;
+    },
+    getArticlePendingFailed: (state) => {
+      
+    },
+    updateArticlePendingStart: (state) => {
+      state.updateArticlePending.loading = true;
+      state.updateArticlePending.error = false;
+    },
+    updateArticlePendingSuccess: (state, action) => {
+      state.updateArticlePending.loading = false;
+      state.updateArticlePending.articlesPending = action.payload;
+    },
+    updateArticlePendingFailed: (state) => {
+      state.updateArticlePending.loading = false;
+      state.updateArticlePending.error = true;
+    },
   },
 });
 
@@ -70,6 +104,12 @@ export const {
   deleteArticleStart,
   deleteArticleSuccess,
   deleteArticleFailed,
+  getArticlePendingStart,
+  getArticlePendingSuccess,
+  getArticlePendingFailed,
+  updateArticlePendingStart,
+  updateArticlePendingSuccess,
+  updateArticlePendingFailed,
 } = articleSlice.actions;
 
 export default articleSlice.reducer;

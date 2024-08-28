@@ -142,39 +142,31 @@ const userController = {
     }
   },
 
-  getPreferences: async (req, res) => {
+  updateOrCreate: async (req, res) => {
     try {
-      const userId = req.user.id; // Lấy ID của user từ req.user.id
-      const user = await User.findById(userId).populate('preferences.categories.category');
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+      const { _id, ...userData } = req.body;
+  
+      let user;
+      if (_id) {
+        // Nếu có _id, tìm user để cập nhật
+        user = await User.findById(_id);
+        if (user) {
+          // Cập nhật người dùng nếu tồn tại
+          user = await User.findByIdAndUpdate(_id, userData, { new: true, runValidators: true });
+          return res.json({ message: 'User updated', user });
+        }
       }
-      res.json(user.preferences);
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  },
-
-  updatePreferences: async (req, res) => {
-    try {
-      const userId = req.user.id;
-      const { categoryId, topics } = req.body; 
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      let categoryPreference = user.preferences.categories.find(cat => cat.category.toString() === categoryId);
-      if (categoryPreference) {
-        categoryPreference.topics.push(...topics.filter(topic => !categoryPreference.topics.includes(topic)));
-      } else {
-        user.preferences.categories.push({ category: categoryId, topics });
-      }
+      
+      // Nếu không có _id hoặc không tìm thấy user, tạo mới
+      user = new User(userData);
       await user.save();
-      res.json(user.preferences);
+      return res.status(201).json({ message: 'User created', user });
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      console.error("Error in updateOrCreate:", err);
+      return res.status(400).json({ error: err.message });
     }
   }
+
 };
 
 module.exports = userController;

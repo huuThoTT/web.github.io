@@ -17,6 +17,7 @@ const articleSchema = new Schema({
     Comment: [{ type: Schema.Types.ObjectId, ref: 'Comment' }] ,
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
     Publish: { type: Boolean, default: false },
+    isRead: { type: Boolean, default: false },
     views: { type: Number, default: 0 }, 
     totalRating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 }, 

@@ -5,48 +5,47 @@ const articleController = require('../controllers/Article_controller');
 const categoryController = require('../controllers/Category_controller');
 const commentController = require('../controllers/Comment_controller');
 const notificationController = require('../controllers/Notification_controller');
-const advertisementController = require('../controllers/Advertisement_controller');
-const { verifyToken, authorize, verifyTokenAndUserAuthorization, verifyTokenAndAdmin,} = require("../middleware/userVerifyToken");
+const tagController = require('../controllers/Tag_controller')
 const { verifyToken,  verifyTokenAndUserAuthorization, verifyTokenAndAdmin,} = require("../middleware/userVerifyToken");
-// User routes
-router.get('/users', verifyToken, userController.getAll);
-router.post('/users/register', userController.register);
-router.post('/users/login', userController.login);
-router.put('/users/:id', verifyTokenAndUserAuthorization, userController.update);
-router.delete('/users/:id', verifyTokenAndAdmin, userController.delete);
-router.get('/users/:id/preferences', verifyToken, userController.getPreferences);
-router.put('/users/:id/preferences', verifyToken, userController.updatePreferences);
-router.post('/users/logout', verifyToken, userController.logOut);
-router.post('/users/refresh', userController.requestRefreshToken);
+//Auth
+router.post('/auth/register', userController.register);
+router.post("/auth/logout", verifyToken, userController.logOut);
+router.post('/auth/login', userController.login);
+
 //REFRESH TOKEN
-router.post("/refresh", userController.requestRefreshToken);
+router.post("/auth/refresh", userController.requestRefreshToken);
+
+// User routes
+router.get('/user', userController.getAll);
+router.post('/user/updateUser', userController.updateOrCreate);
+router.delete('/user/:id',userController.delete)
 
 // Article routes
-router.post('/articles', verifyTokenAndAdmin, articleController.create);
-router.get('/articles', articleController.getAll);
-router.get('/articles/:id', verifyToken, articleController.getById);
-router.put('/articles/:id', verifyTokenAndUserAuthorization, articleController.update);
-router.delete('/articles/:id', verifyTokenAndAdmin, articleController.delete);
-router.get('/articles/search', articleController.search);
-router.put('/articles/:id/approve', verifyTokenAndAdmin, articleController.approve);
+router.get('/article/getArticle', articleController.getAll);
+router.post('/article/updateArticle',articleController.update);
+router.delete('/article/:id',articleController.delete);
+// router.get('/article/getArticlePending', articleController.getAll);
+// router.post('/article/updateArticlePending',articleController.update);
+
 // Category routes
-router.post('/categories', verifyTokenAndAdmin, categoryController.create);
-router.get('/categories', categoryController.getAll);
-router.get('/categories/:id', categoryController.getById);
-router.put('/categories/:id', verifyTokenAndAdmin, categoryController.update);
-router.delete('/categories/:id', verifyTokenAndAdmin, categoryController.delete);
+router.get('/category/getCategory', categoryController.getAll);
+router.post('/category/updateCategory', categoryController.updateOrCreate);
+router.delete('/category/:id', categoryController.delete);
 
-// Comment routes
-router.post('/articles/:articleId/comments', verifyToken, commentController.add);
-router.get('/articles/:articleId/comments', commentController.getByArticle);
-router.delete('/comments/:id', verifyTokenAndUserAuthorization, commentController.delete);
+// Tags
+router.get('/tag/getTag', tagController.getAll);
+router.post('/tag/updateTag', tagController.updateOrCreate);
+router.delete('/tag/:id', tagController.delete);
 
-// Notification routes
-router.get('/notifications', verifyToken, notificationController.getAllByUser);
-router.put('/notifications/:id', verifyToken, notificationController.markAsRead);
+// // Comment routes
+// router.get('/commnet/getComment', commentController.getAll);
+// router.post('/comment/updateComment', commentController.update);
+// router.delete('/comment/:id', commentController.delete);
 
-//LOG OUT
-router.post("/logout", verifyToken, userController.logOut);
+// Rating routes
+// router.get('/rating/getRating', commentController.getAll);
+// router.post('/rating/updateRating', commentController.update);
+
 
 // Advertisement routes
 router.post('/advertisements', verifyToken, authorize(['admin']), advertisementController.create);

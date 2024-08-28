@@ -1,40 +1,28 @@
 import { Avatar, Badge, Drawer, List, Space, Typography, Form, Input, Button } from "antd";
 import { BellFilled, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser, getComment, getArticlePending } from "../../../redux/apiRequest";
 import "./header.css";
 
 function AdminHeader() {
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [adminInfoVisible, setAdminInfoVisible] = useState(false);
-  const [adminInfo, setAdminInfo] = useState({
-    username: "admin",
-    password: "********",
-    email: "admin@example.com",
-  });
-  const [comments, setComments] = useState([]);
-  const [notifications, setNotifications] = useState([]);
+  const dispatch = useDispatch();
+
+  const adminInfo = useSelector((state) => state.auth?.login?.currentUser);
+  const articlesPending = useSelector((state) => state.article?.getArticlePending?.articlesPending) || [];
+  const comments = useSelector((state) => state.comment?.getComment?.comments) || [];
+
+  // Lọc những comment và article chưa được đọc
+  const unreadComments = comments.filter((comment) => !comment.isRead);
+  const unreadNotifications = articlesPending.filter((article) => !article.isRead);
 
   useEffect(() => {
-    // Lấy dữ liệu bình luận mới nhất
-    axios.get("/api/comments")
-      .then(response => {
-        setComments(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching comments:", error);
-      });
-
-    // Lấy bài báo mới nhất với trạng thái pending
-    axios.get("/api/articles/pending")
-      .then(response => {
-        setNotifications(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching notifications:", error);
-      });
-  }, []);
+    getComment(dispatch);
+    getArticlePending(dispatch);
+  }, [dispatch]);
 
   const showAdminInfoDrawer = () => {
     setAdminInfoVisible(true);
@@ -45,9 +33,11 @@ function AdminHeader() {
   };
 
   const handleAdminInfoUpdate = (values) => {
-    // Handle update logic here
-    console.log("Updated admin info:", values);
-    setAdminInfo(values); // Update admin info state
+    const updatedValues = {
+      ...adminInfo,
+      ...values,
+    };
+    updateUser(dispatch, updatedValues);
     closeAdminInfoDrawer();
   };
 
@@ -64,7 +54,7 @@ function AdminHeader() {
         Admin Dashboard
       </Typography.Title>
       <Space>
-        <Badge count={comments.length} dot>
+        <Badge count={unreadComments.length} dot>
           <MailOutlined
             style={{ fontSize: 24 }}
             onClick={() => {
@@ -72,7 +62,7 @@ function AdminHeader() {
             }}
           />
         </Badge>
-        <Badge count={notifications.length}>
+        <Badge count={unreadNotifications.length}>
           <BellFilled
             style={{ fontSize: 24 }}
             onClick={() => {
@@ -84,35 +74,31 @@ function AdminHeader() {
       <Drawer
         title="Comments"
         visible={commentsOpen}
-        onClose={() => {
-          setCommentsOpen(false);
-        }}
+        onClose={() => setCommentsOpen(false)}
         maskClosable
       >
         <List
-          dataSource={comments}
-          renderItem={(item) => {
-            return <List.Item>{item.content}</List.Item>;
-          }}
+          dataSource={unreadComments}
+          renderItem={(item) => (
+            <List.Item>
+              <Typography.Text strong>{item.user}</Typography.Text>: {item.content}
+            </List.Item>
+          )}
         />
       </Drawer>
       <Drawer
         title="Notifications"
         visible={notificationsOpen}
-        onClose={() => {
-          setNotificationsOpen(false);
-        }}
+        onClose={() => setNotificationsOpen(false)}
         maskClosable
       >
         <List
-          dataSource={notifications}
-          renderItem={(item) => {
-            return (
-              <List.Item>
-                <Typography.Text strong>{item.title}</Typography.Text> is pending review!
-              </List.Item>
-            );
-          }}
+          dataSource={unreadNotifications}
+          renderItem={(item) => (
+            <List.Item>
+              <Typography.Text strong>{item.author}</Typography.Text>: {item.title} is pending review!
+            </List.Item>
+          )}
         />
       </Drawer>
       <Drawer

@@ -23,6 +23,19 @@ const authSlice = createSlice({
             state.login.currentUser = action.payload;
             state.login.error = false;
         },
+        
+    updateBookmarkedArticles: (state, action) => {
+        if (state.login.currentUser) {
+            // Sử dụng Set để loại bỏ các id trùng lặp
+            const currentBookmarks = new Set(state.login.currentUser.bookmarkedArticles || []);
+            const newBookmarks = new Set(action.payload);
+            
+            // Kết hợp các bookmark hiện tại với các bookmark mới
+            const updatedBookmarks = [...new Set([...currentBookmarks, ...newBookmarks])];
+            
+            state.login.currentUser.bookmarkedArticles = updatedBookmarks;
+        }
+    },
         loginFailed: (state) =>{
             state.login.isFetching = false;
             state.login.error = true;
@@ -65,7 +78,8 @@ export const {
     registerFailed,
     logOutStart,
     logOutSuccess,
-    logOutFailed
+    logOutFailed,
+    updateBookmarkedArticles
 } = authSlice.actions;
 
 export default authSlice.reducer;

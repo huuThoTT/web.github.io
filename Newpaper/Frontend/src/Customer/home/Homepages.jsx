@@ -10,7 +10,7 @@ const Homepages = () => {
   const dispatch = useDispatch();
   
   // Lấy trạng thái từ redux store
-  const { loading, error, articles } = useSelector((state) => state.article);
+  const { loading, error } = useSelector((state) => state.article.getArticle);
 
   useEffect(() => {
     getArticle(dispatch);
