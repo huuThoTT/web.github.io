@@ -3,16 +3,24 @@ const Schema = mongoose.Schema;
 
 const articleSchema = new Schema({
     title: { type: String, required: true },
-    content: { type: String, required: true },
+    content_blocks: [
+        {
+            type: { type: String, enum: ['paragraph', 'image','quote'], required: true },
+            content: { type: String },
+            src: { type: String },
+            alt: { type: String }
+        }
+    ],
     author: { type: String, required: true },
-    categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
-    tags: [String],
+    category: { type: String},
+    tags: [{ type: String }] ,
+    Comment: [{ type: Schema.Types.ObjectId, ref: 'comments' }] ,
     status: { type: String, enum: ['pending', 'approved', 'rejected'], default: 'pending' },
+    publish: { type: Boolean, default: false },
+    isRead: { type: Boolean, default: false },
     views: { type: Number, default: 0 }, 
     totalRating: { type: Number, default: 0 },
     ratingCount: { type: Number, default: 0 }, 
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-});
+},  { timestamps: true });
 
-module.exports = mongoose.model('Article', articleSchema);
+module.exports = mongoose.model('articles', articleSchema);
