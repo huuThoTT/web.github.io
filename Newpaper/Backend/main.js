@@ -6,6 +6,15 @@ const connectToDatabase = require("./utils/db");
 const router = require("./routes/router");
 dotenv.config();
 
+const Article = require('./models/Article_model');
+const Bookmark = require(('./models/Bookmark_model'));
+const Category = require(('./models/Category_model'));
+const Comment = require(('./models/Comment_model'));
+const Notification = require(('./models/Notification_model'));
+const Rating = require(('./models/Rating_model'));
+const Tag = require(('./models/Tag_model'));
+const User = require(('./models/User_model'));
+
 const app = express();
 
 connectToDatabase.connectToDatabase();
