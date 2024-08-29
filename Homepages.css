@@ -1,0 +1,42 @@
+/* Loading spinner CSS */
+.loading-spinner {
+    border: 8px solid rgba(0, 0, 0, 0.1);
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f3f4f6;
+  }
+/* Error message CSS */
+.error-message {
+    padding: 16px 20px;
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+    margin: 20px auto;
+    width: 80%;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+    
