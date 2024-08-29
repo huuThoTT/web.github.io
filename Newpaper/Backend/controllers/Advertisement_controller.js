@@ -7,7 +7,7 @@ const advertisementController = {
       await newAdvertisement.save();
       res.status(201).json(newAdvertisement);
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(401).json({ error: err.message });
     }
   },
   getAll: async (req, res) => {
@@ -19,7 +19,7 @@ const advertisementController = {
         return res.json([]);
       }
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(401).json({ error: err.message });
     }
   },
   getById: async (req, res) => {
@@ -27,7 +27,7 @@ const advertisementController = {
       const advertisement = await Advertisement.findById(req.params.id);
       res.json(advertisement);
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(401).json({ error: err.message });
     }
   },
   update: async (req, res) => {
@@ -35,7 +35,7 @@ const advertisementController = {
       const updatedAdvertisement = await Advertisement.findByIdAndUpdate(req.params.id, req.body, { new: true });
       res.json(updatedAdvertisement);
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(401).json({ error: err.message });
     }
   },
   delete: async (req, res) => {
@@ -43,7 +43,7 @@ const advertisementController = {
       await Advertisement.findByIdAndDelete(req.params.id);
       res.json({ message: 'Advertisement deleted' });
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(401).json({ error: err.message });
     }
   },
   toggle: async (req, res) => {
@@ -53,7 +53,7 @@ const advertisementController = {
       await advertisement.save();
       res.json(advertisement);
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(401).json({ error: err.message });
     }
   }
 };
