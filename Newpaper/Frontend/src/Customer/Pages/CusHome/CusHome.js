@@ -1,116 +1,297 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams,useLocation } from "react-router-dom";
+import { Rate } from 'antd';
+import Side from "../home/sideContent/side/Side";
+import "../home/mainContent/homes/style.css";
+import "./singlepage.css";
+import "../home/sideContent/side/side.css";
+import 'antd/dist/reset.css';
+import Suggest from "./suggest/suggest";
+import { useDispatch, useSelector } from "react-redux";
+import { getComment, updateComment, deleteComment, getRating, updateRating, updateArticle } from "../../redux/apiRequest";
 
-const NewsItem = ({ imageSrc, title, url, author, publish_time }) => (
-  <article className="flex gap-5 max-md:flex-col max-md:gap-0">
-    <div className="flex flex-col w-[34%] max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col grow justify-center items-start max-md:mt-2">
-        <img loading="lazy" src={imageSrc} alt={title} className="w-full aspect-[1.64]" />
-      </div>
-    </div>
-    <div className="flex flex-col ml-5 w-[66%] max-md:ml-0 max-md:w-full">
-      <div className="flex flex-col grow px-5 mt-3.5 text-2xl font-medium text-black max-md:mt-5 max-md:max-w-full">
-        <a 
-        className="max-md:max-w-full"
-        href={url}
-        target= "_blank"
-        rel= "noopener noreferrer"
-        >
-          <h2>{title}</h2>
-        </a>
-        <div className="flex gap-5 self-start mt-20 max-md:mt-10 max-md:ml-1">
-          <h1>{author}</h1>
-         <time>{publish_time}</time>
-        </div>
-      </div>
-    </div>
-  </article>
-);
+const SinglePage = () => {
+  const { id } = useParams();
+  const [newComment, setNewComment] = useState("");
+  const [visibleComments, setVisibleComments] = useState(5);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth?.login?.currentUser);
+  const { pathname } = useLocation();
 
+  useEffect(() => {
+    window.scrollTo(0, 0); // Cuộn về đầu trang
+  }, [pathname]);
+  const article = useSelector((state) => 
+    Array.isArray(state.article?.getArticle?.articles) 
+      ? state.article.getArticle.articles.find(a => a._id === id) 
+      : null
+  );
 
-function CusHome() {
-  const newsItems = [
-    {
-      imageSrc: "https://vcdn1-kinhdoanh.vnecdn.net/2024/06/13/nganhangbanvang33JPG-171825734-2233-9344-1718257496.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=h0D8npEGtQKwic8DZ3mQXw",
-      title: "Agribank bán vàng trực tuyến từ tuần sau",
-      url: "https://vnexpress.net/gia-vang-moi-nhat-hom-nay-13-6-4757870.html",
-      author: "Minh Sơn",
-      publish_time: "Thứ năm, 13/6/2024, 13:16 (GMT+7)",
-    },
-    {
-      imageSrc: "https://vcdn1-thethao.vnecdn.net/2024/06/13/huynh-nhu-lank-fc-2024-jpeg-17-4192-5997-1718257157.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=DpmLnfX_0LScVyT2wZ3-Ag",
-      title: "Huỳnh Như sở hữu bàn thắng đẹp bậc nhất giải Bồ Đào Nha",
-      url: "https://vnexpress.net/huynh-nhu-so-huu-ban-thang-dep-bac-nhat-giai-bo-dao-nha-4757867.html",
-      author: "Hiếu Lương",
-      publish_time: "Thứ năm, 13/6/2024, 13:52 (GMT+7)",
-    },
-    {
-      imageSrc: "https://vcdn1-vnexpress.vnecdn.net/2024/06/13/69e74940-3480-4901-9675-4b7ce4-7686-5055-1718261262.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=PN738QadhGX_Qov0lMeU3A",
-      title: "Hà Nội công bố đáp án 7 môn thi lớp 10",
-      url: "https://vnexpress.net/de-thi-dap-an-lop-10-ha-noi-nam-2023-cua-so-giao-duc-va-dao-tao-4756837.html",
-      author: "Thanh Hằng",
-      publish_time: "Thứ năm, 13/6/2024, 13:55 (GMT+7)",
-    },
-    {
-      imageSrc: "https://vcdn1-vnexpress.vnecdn.net/2024/06/13/benh-vien-thu-duc-1-jpg-5184-1-9985-9293-1718262540.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=XGdnmRPhPH8tFrqV1Wh2BQ",
-      title: "Cựu giám đốc Bệnh viện Thủ Đức: 'Sai vì lượng bệnh nhân Covid rất lớn'",
-      url: "https://vnexpress.net/cuu-giam-doc-benh-vien-thu-duc-sai-vi-luong-benh-nhan-covid-rat-lon-4757657.html",
-      author: "Hải Duyên - Trọng Nghĩa",
-      publish_time: "Thứ năm, 13/6/2024, 09:28 (GMT+7)"
-     },
-     {
-      imageSrc: "https://vcdn1-vnexpress.vnecdn.net/2024/06/13/phmnhnbtrn-1718247093-6584-171-4241-5087-1718249021.jpg?w=220&h=132&q=100&dpr=1&fit=crop&s=36QXQWZIajRd4tq9y5Yp9w",
-      title: "Nữ phạm nhân trốn trại giam bị bắt",
-      url: "https://vnexpress.net/nu-pham-nhan-vuot-nguc-bi-bat-4757719.html",
-      author: "Đức Hùng",
-      publish_time: "Thứ năm, 13/6/2024, 09:44 (GMT+7)"
-     },
-     {
-      imageSrc: "https://i1-vnexpress.vnecdn.net/2024/06/13/z5533983419428-cf466f3ad6fdb69-2582-5357-1718251639.jpg?w=300&h=180&q=100&dpr=1&fit=crop&s=uNo7MQTysUBeOnawQ0YtjQ",
-      title: "Thủy triều đỏ xuất hiện ở biển Phú Quốc",
-      url: "https://vnexpress.net/thuy-trieu-do-xuat-hien-o-bien-phu-quoc-4757814.html",
-      author: "Ngọc Tài",
-      publish_time: "Thứ năm, 13/6/2024, 11:23 (GMT+7)"
-     },
-     {     
-      imageSrc: "https://i1-vnexpress.vnecdn.net/2024/06/13/233a9523-1718252223-5989-1718252996.jpg?w=300&h=180&q=100&dpr=1&fit=crop&s=QkJbWEX8JOX_OsCgQZNPhQ",
-      title: "TP HCM chấp nhận đáp án khác cho đề Tiếng Anh lớp 10",
-      url: "https://vnexpress.net/tp-hcm-chap-nhan-dap-an-khac-cho-de-tieng-anh-lop-10-4757804.html",
-      author: "Lệ Nguyễn",
-      publish_time: "Thứ năm, 13/6/2024, 12:04 (GMT+7)"   
-     },
-     {      
-      imageSrc: "https://i1-vnexpress.vnecdn.net/2024/06/13/2c6dc62352593075d6482e41459804-9562-6778-1718241780.jpg?w=300&h=180&q=100&dpr=1&fit=crop&s=BCOg43F7lCjVIedqeK6VSQ",
-      title: "Thành phố Mỹ công nhận tiếng Việt là ngôn ngữ chính thức",
-      url: "https://vnexpress.net/thanh-pho-my-cong-nhan-tieng-viet-la-ngon-ngu-chinh-thuc-4757673.html",
-      author: "Đức Trung (Theo San Francisco Chronicle)",
-      publish_time: "Thứ năm, 13/6/2024, 08:47 (GMT+7)"     
-     },
-     {      
-      imageSrc: "https://i1-giadinh.vnecdn.net/2024/04/03/anh-4-ngoquyenhongson-17120785-9381-7271-1712078817.jpg?w=300&h=180&q=100&dpr=1&fit=crop&s=egniOzbWNe9mKDe1EqqXQQ",
-      title: "Chàng trai chuyển giới mang thai thay vợ",
-      url: "https://vnexpress.net/chang-trai-chuyen-gioi-mang-thai-thay-vo-4729775.html",
-      author: "Thanh Nga",
-      publish_time: "Thứ tư, 3/4/2024, 06:30 (GMT+7)"      
-     },
-     {      
-      imageSrc: "https://i1-giadinh.vnecdn.net/2022/04/16/chuyen-gioi-1-1650043904-7681-1650044105.jpg?w=300&h=180&q=100&dpr=1&fit=crop&s=xkOlD-i-nKGz9Ld8VeuP6A",
-      title: "Hành trình tìm lại mình của hai chị em chuyển giới",
-      url: "https://vnexpress.net/hanh-trinh-tim-lai-minh-cua-hai-chi-em-chuyen-gioi-4450923.html",
-      author: "Phạm Nga",
-      publish_time: "Thứ bảy, 16/4/2022, 06:32 (GMT+7)"     
-     }
-  ];
+  const comments = useSelector((state) => 
+    Array.isArray(state.comment?.getComment?.comments) 
+      ? state.comment.getComment.comments.filter(c => c.articleId === id) 
+      : []
+  );
+
+  const ratings = useSelector((state) => 
+    Array.isArray(state.rating?.getRating?.ratings) 
+      ? state.rating.getRating.ratings.filter(r => r.articleId === id) 
+      : []
+  );
+
+  const userRating = useSelector((state) => {
+    const rating = ratings.find(r => r.userId === user?._id);
+    return rating ? rating.ratingCount : 0;
+  });
+
+  const [currentUserRating, setCurrentUserRating] = useState(userRating);
+  const [averageRating, setAverageRating] = useState(article?.ratingCount > 0 ? article.totalRating / article.ratingCount : 0);
+  useEffect(() => {
+    getComment(dispatch);
+    getRating(dispatch);
+  }, [dispatch]);
+  
+  useEffect(() => {
+    setCurrentUserRating(userRating);
+  }, [userRating]);
+
+  const handleCommentChange = (e) => {
+    setNewComment(e.target.value);
+  };
+
+  const addComment = async (e) => {
+    e.preventDefault();
+    if (newComment.trim() !== "") {
+      const newCommentData = {
+        content: newComment,
+        user: user.username,
+        userId: user._id,
+        articleId: id,
+      };
+      await updateComment(dispatch, newCommentData);
+      setNewComment("");
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    await deleteComment(dispatch, commentId);
+  };
+
+  const handleEditComment = async (commentId, updatedContent) => {
+    const updatedComment = {
+      _id: commentId,
+      content: updatedContent,
+      userId: user._id,
+      articleId: id,
+      user: user.username,
+    };
+    await updateComment(dispatch, updatedComment);
+  };
+
+  const loadMoreComments = () => {
+    setVisibleComments((prevVisibleComments) => prevVisibleComments + 5);
+  };
+
+  const handleRatingChange = async (value) => {
+    setCurrentUserRating(value);
+  
+    if (!user) {
+      alert('You must be logged in to rate this article.');
+      return;
+    }
+  
+    const existingRating = ratings.find(r => r.userId === user._id);
+  
+    if (existingRating) {
+      // Update existing rating
+      const updatedRating = {
+        ...existingRating,
+        ratingCount: value,
+      };
+      await updateRating(dispatch, updatedRating);
+    } else {
+      // Create new rating
+      const newRating = {
+        ratingCount: value,
+        articleId: id,
+        userId: user._id,
+      };
+      await updateRating(dispatch, newRating);
+    }
+  
+    // Calculate the updated total rating and rating count
+    const totalRating = ratings.reduce((sum, r) => sum + r.ratingCount, 0) + (existingRating ? value - existingRating.ratingCount : value);
+    const ratingCount = ratings.length + (existingRating ? 0 : 1);
+  
+    // Create a new article object with updated rating data
+    const updatedArticle = {
+      ...article,
+      totalRating: totalRating,
+      ratingCount: ratingCount,
+    };
+  
+    // Update the article in Redux store
+    await updateArticle(dispatch, updatedArticle);
+  
+    // Reflect the new average rating immediately in the UI
+    const newAverageRating = ratingCount > 0 ? totalRating / ratingCount : 0;
+    // Update local state if needed
+    // Note: You might want to update your Redux store instead, depending on your app's structure
+    setAverageRating(newAverageRating);
+  };
+  
+
+  const getShareUrl = (platform) => {
+    const currentUrl = window.location.href;
+    const encodedUrl = encodeURIComponent(currentUrl);
+    const encodedTitle = encodeURIComponent(article.title);
+    const encodedDescription = encodeURIComponent(article.content_blocks[0].content);
+
+    switch (platform) {
+      case 'facebook':
+        return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+      case 'twitter':
+        return `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`;
+      case 'instagram':
+        return `https://www.instagram.com/?url=${encodedUrl}`;
+      default:
+        return '#';
+    }
+  };
 
   return (
-    <main className="flex flex-col max-w-[985px]">
-      {newsItems.slice(0).map((item, index) => (
-        <section>
-          <NewsItem {...item} />
-        </section>
-      ))}
-    </main>
+    <>
+      {article ? (
+        <main className="container mx-auto p-4">
+          <div className="flex flex-col md:flex-row">
+            <section className="mainContent details md:w-2/3 p-4">
+              <h1 className="title text-2xl font-bold mb-4">{article.title}</h1>
+
+              <div className="author flex items-center mb-4">
+                <span className="text-gray-600">by</span>
+                <img src="https://i.pravatar.cc/150?img=10" alt="Random User" className="ml-2 w-8 h-8 rounded-full" />
+                <p className="ml-2"> {article.author} on</p>
+                <label className="ml-2 text-gray-600">{new Date(article.createdAt).toLocaleString()}</label>
+              </div>
+
+              <div className='social'>
+                <div className='socBox' onClick={() => window.open(getShareUrl('facebook'), '_blank')}>
+                  <i className='fab fa-facebook-f'></i>
+                  <span>SHARE</span>
+                </div>
+                <div className='socBox' onClick={() => window.open(getShareUrl('twitter'), '_blank')}>
+                  <i className='fab fa-twitter'></i>
+                  <span>SHARE</span>
+                </div>
+                <div className='socBox' onClick={() => window.open(getShareUrl('instagram'), '_blank')}>
+                  <i className='fab fa-instagram'></i>
+                  <span>SHARE</span>
+                </div>
+              </div>
+
+              <div className="content">
+                {article.content_blocks.map((block, index) => {
+                  if (block.type === "paragraph") {
+                    return <p key={index} className="my-4 text-justify leading-relaxed">{block.content}</p>;
+                  } else if (block.type === "image") {
+                    return (
+                      <div key={index} className="image-block my-6 flex flex-col items-center">
+                        {block.src && <img src={block.src} alt={block.alt} className="max-w-full rounded-lg shadow-md" />}
+                        <div className="caption mt-2 text-sm text-gray-600">{block.alt}</div>
+                      </div>
+                    );
+                  } else if (block.type === "quote") {
+                    return (
+                      <div key={index} className="quote my-4 border-l-4 border-gray-300 pl-4 italic text-gray-700">
+                        <i className="fa fa-quote-left"></i>
+                        <p className="ml-2">{block.content}</p>
+                      </div>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+              </div>
+
+              <div className="rating-section mt-8">
+                <h2 className="text-lg font-bold mb-2">Rating</h2>
+                <Rate value={averageRating} disabled />
+                <p className="mt-2 text-sm text-gray-600">
+                  Average Rating: {averageRating.toFixed(1)} ({article.ratingCount} ratings)
+                </p>
+                <div className="mt-4">
+                  <h3 className="text-lg font-bold mb-2">Rate this article</h3>
+                  <Rate value={currentUserRating} onChange={handleRatingChange} />
+                </div>
+              </div>
+
+              <section className="comments mt-8">
+                <h2 className="text-lg font-bold mb-4">Comments</h2>
+                {comments.length === 0 ? (
+                  <p>No comments yet.</p>
+                ) : (
+                  comments.slice(0, visibleComments).map((comment) => (
+                    <div key={comment._id} className="comment my-4 p-4 border-b border-gray-200">
+                      <p className="font-bold">
+                        {comment.userId === user._id ? `You: ${comment.user}` : comment.user}
+                      </p>
+                      <p className="text-gray-600">{new Date(comment.createdAt).toLocaleString()}</p>
+                      <p className="mt-2">{comment.content}</p>
+                
+                      {comment.userId === user._id && (
+                        <div className="mt-2 flex space-x-2">
+                          <button
+                            className="text-blue-500 hover:text-blue-700"
+                            onClick={() => handleEditComment(comment._id, prompt("Edit your comment:", comment.content))}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => handleDeleteComment(comment._id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+                {comments.length > visibleComments && (
+                  <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded" onClick={loadMoreComments}>
+                    Load more comments
+                  </button>
+                )}
+              </section>
+
+              <form onSubmit={addComment} className="comment-form mt-8">
+                <h3 className="text-lg font-bold mb-2">Add a Comment</h3>
+                <textarea
+                  className="w-full h-32 p-2 border border-gray-300 rounded"
+                  value={newComment}
+                  onChange={handleCommentChange}
+                />
+                <button
+                  type="submit"
+                  className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+                >
+                  Add Comment
+                </button>
+              </form>
+            </section>
+            <section className="sideContent md:w-1/3 p-4">
+              <Side />
+            </section>
+          </div>
+          <section>
+            <Suggest category={article.category} />
+          </section>
+        </main>
+      ) : (
+        <h1>Not Found</h1>
+      )}
+    </>
   );
-}
+};
 
-
-export default CusHome;
+export default SinglePage;
