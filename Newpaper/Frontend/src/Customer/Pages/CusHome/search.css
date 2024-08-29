@@ -1,0 +1,65 @@
+.music .box {
+  margin-bottom: 20px; /* Giảm khoảng cách dưới mỗi box */
+  margin-left: 0; /* Loại bỏ margin bên trái */
+  display: flex; /* Sử dụng Flexbox để căn chỉnh hình ảnh và nội dung */
+}
+
+.music .images {
+  flex: 1; /* Hình ảnh chiếm không gian còn lại */
+  margin-right: 15px; /* Thêm khoảng cách giữa hình ảnh và nội dung */
+}
+
+.music .text {
+  flex: 2; /* Nội dung chiếm không gian nhiều hơn hình ảnh */
+  padding: 0; /* Loại bỏ padding bên trái và bên phải */
+}
+
+.music img {
+  width: 100%; /* Đảm bảo hình ảnh chiếm toàn bộ không gian của div chứa */
+  height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ của hình ảnh */
+  object-fit: cover; /* Giữ tỷ lệ của hình ảnh trong khung chứa */
+}
+
+.music h1 {
+  font-size: 20px; /* Điều chỉnh kích thước tiêu đề cho phù hợp */
+  margin-bottom: 10px; /* Thêm khoảng cách dưới tiêu đề */
+}
+
+@media screen and (max-width: 768px) {
+  .music img {
+    height: auto; /* Điều chỉnh chiều cao hình ảnh cho màn hình nhỏ */
+  }
+}
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 300px;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #007bff;
+}
+
+.search-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
