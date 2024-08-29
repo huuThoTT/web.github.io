@@ -5,8 +5,6 @@ const articleController = require('../controllers/Article_controller');
 const categoryController = require('../controllers/Category_controller');
 const commentController = require('../controllers/Comment_controller');
 const notificationController = require('../controllers/Notification_controller');
-const subscriptionController = require('../controllers/Subscription_controller');
-const advertisementController = require('../controllers/Advertisement_controller');
 const { verifyToken, authorize, verifyTokenAndUserAuthorization, verifyTokenAndAdmin,} = require("../middleware/userVerifyToken");
 // User routes
 router.get('/users', verifyToken, userController.getAll);
