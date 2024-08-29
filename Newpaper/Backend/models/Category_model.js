@@ -3,10 +3,8 @@ const Schema = mongoose.Schema;
 const categorySchema = new Schema({
     name: { type: String, required: true },
     description: { type: String },
-    listIdArticle:[{ type: Schema.Types.ObjectId }],
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-  });
+    tags: [{ type: Schema.Types.ObjectId, ref: 'tags' }],
+  }, { timestamps: true });
   
-  module.exports = mongoose.model('Category', categorySchema);
+  module.exports = mongoose.model('categories', categorySchema);
   
