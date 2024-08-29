@@ -9,6 +9,7 @@ const notificationController = {
       res.status(400).json({ error: err.message });
     }
   },
+  
   markAsRead: async (req, res) => {
     try {
       const updatedNotification = await Notification.findByIdAndUpdate(req.params.id, { read: true }, { new: true });
@@ -20,3 +21,4 @@ const notificationController = {
 };
 
 module.exports = notificationController;
+ 
