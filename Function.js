@@ -8,20 +8,20 @@ exports.convert = (globalObject, value, { context = "The provided value" } = {})
     throw new globalObject.TypeError(context + " is not a function");
   }
 
-  // function invokeTheCallbackFunction(...args) {
-  //   const thisArg = utils.tryWrapperForImpl(this);
-  //   let callResult;
+  function invokeTheCallbackFunction(...args) {
+    const thisArg = utils.tryWrapperForImpl(this);
+    let callResult;
 
-  //   for (let i = 0; i < args.length; i++) {
-  //     args[i] = utils.tryWrapperForImpl(args[i]);
-  //   }
+    for (let i = 0; i < args.length; i++) {
+      args[i] = utils.tryWrapperForImpl(args[i]);
+    }
 
-  //   callResult = Reflect.apply(value, thisArg, args);
+    callResult = Reflect.apply(value, thisArg, args);
 
-  //   callResult = conversions["any"](callResult, { context: context, globals: globalObject });
+    callResult = conversions["any"](callResult, { context: context, globals: globalObject });
 
-  //   return callResult;
-  // }
+    return callResult;
+  }
 
   invokeTheCallbackFunction.construct = (...args) => {
     for (let i = 0; i < args.length; i++) {
