@@ -25,7 +25,27 @@ footer .item img {
   height: 80px;
   object-fit: cover;
 }
+footer .item p {
+  padding: 10px 20px;
+}
 
+footer ul li {
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+footer ul li:nth-last-child(1) {
+  border-bottom: none;
+}
+footer ul li span::before {
+  content: ">";
+  top: 0;
+  left: 0;
+  margin-right: 10px;
+}
 .legal {
   padding: 15px;
   background-color: #000;
