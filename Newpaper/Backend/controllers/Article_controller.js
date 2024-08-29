@@ -3,7 +3,7 @@ const User = require('../models/User_model');
 const mongoose = require('mongoose');
 
 const articleController = {
-
+ 
  
   getAll: async (req, res) => {
     try {
